@@ -81,8 +81,6 @@ const certifiedDataSource: CertifiedType[] = [];
   }
 })();
 
-
-
 const settleDatas = [
   { merchantName: '佳佳便利店', amount: 100, key: 0 },
   { merchantName: '红旗超市', amount: 100, key: 1 },
@@ -95,6 +93,8 @@ const settleDatas = [
   { merchantName: '司南超市', amount: 100, key: 8 },
   { merchantName: '司南超市', amount: 100, key: 9 },
 ];
+
+
 const Manage_BD: FC = () => {
   // columns data
   const settlementColumns: ColumnProps<any>[] = [

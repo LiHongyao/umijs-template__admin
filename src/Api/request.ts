@@ -49,7 +49,7 @@ service.interceptors.response.use(async (response, options) => {
       Utils.push('/login');
       return res;
     default:
-      message.error(res.msg)
+      message.error(res.msg);
       return res;
   }
 });
