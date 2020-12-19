@@ -1,0 +1,44 @@
+{
+  "private": true,
+  "scripts": {
+    "start": "cross-env UMI_ENV=dev umi dev",
+    "build": "cross-env UMI_ENV=prod umi build",
+    "test": "cross-env UMI_ENV=test umi build",
+    "postinstall": "umi generate tmp",
+    "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
+    "test:coverage": "umi-test --coverage"
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,jsx,less,md,json}": [
+      "prettier --write"
+    ],
+    "*.ts?(x)": [
+      "prettier --parser=typescript --write"
+    ]
+  },
+  "dependencies": {
+    "@ant-design/pro-layout": "^5.0.12",
+    "@umijs/hooks": "^1.9.3",
+    "@umijs/preset-react": "1.x",
+    "@umijs/test": "^3.2.27",
+    "crypto-js": "^4.0.0",
+    "echarts": "^5.0.0",
+    "lg-classnames": "^1.0.4",
+    "lg-cookie": "^1.0.1",
+    "lg-tools": "^1.0.6",
+    "lint-staged": "^10.0.7",
+    "moment": "^2.29.1",
+    "prettier": "^1.19.1",
+    "react": "^17.0.1",
+    "react-dom": "^16.12.0",
+    "react-particles-js": "^3.4.1",
+    "umi": "^3.2.27",
+    "yorkie": "^2.0.0"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
+  }
+}
