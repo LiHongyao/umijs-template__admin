@@ -38,6 +38,12 @@ export default defineConfig({
           path: '/manage-user',
           component: '@/pages/Manage_User',
         },
+        // 交易流水
+        {
+          exact: true,
+          path: '/deal-flow',
+          component: '@/pages/DealFlow',
+        },
         // BD管理
         {
           exact: true,

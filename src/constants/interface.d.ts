@@ -25,5 +25,14 @@ declare namespace DP {
     success: boolean;
   }
 
+  /**
+   * 表格数据类型
+   */
+  type TablePageDataType<T> = {
+    page: number,
+    pageSize: number,
+    filters: T
+  }
+
  
 }

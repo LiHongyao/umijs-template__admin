@@ -9,14 +9,14 @@ type OptionsType = {
 }
 
 interface IProps {
-  onChange: (value: CascaderValueType) => void;
+  onChange?: (value: CascaderValueType) => void;
 }
 
 const CityCascader: FC<IProps> = (props) => {
   const [options, setOptions] = useState<OptionsType[]>([]);
   // events
   const onCascaderChange = (value: CascaderValueType) => {
-    props.onChange(value);
+    props.onChange && props.onChange(value);
   };
   const onLoadData = (selectedOptions?: CascaderOptionType[]) => {
     if (selectedOptions) {

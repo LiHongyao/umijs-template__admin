@@ -12,6 +12,7 @@ import {
   DownOutlined,
   LoginOutlined,
   LockOutlined,
+  StockOutlined
 } from '@ant-design/icons';
 import moment from 'moment';
 import Tools from 'lg-tools';
@@ -74,6 +75,9 @@ const Layouts: FC<IProps> = props => {
             </Menu.Item>
             <Menu.Item key="/manage-bd" icon={<BlockOutlined />}>
               <Link to="/manage-bd">商务管理</Link>
+            </Menu.Item>
+            <Menu.Item key="/deal-flow" icon={<StockOutlined />}>
+              <Link to="/deal-flow">交易流水</Link>
             </Menu.Item>
           </Menu>
         </Sider>
