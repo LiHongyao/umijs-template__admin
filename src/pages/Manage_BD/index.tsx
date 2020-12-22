@@ -12,6 +12,7 @@ import {
   Space,
   Modal,
   Descriptions,
+  Form,
 } from 'antd';
 import classNames from 'lg-classnames';
 import { useBoolean } from '@umijs/hooks';
@@ -31,7 +32,6 @@ type ApplyType = {
   introduce: string;
   note: string;
 };
-
 type CertifiedType = {
   key: number;
   certifiedDate: string;
@@ -93,7 +93,6 @@ const settleDatas = [
   { merchantName: '司南超市', amount: 100, key: 8 },
   { merchantName: '司南超市', amount: 100, key: 9 },
 ];
-
 
 const Manage_BD: FC = () => {
   // columns data
@@ -272,6 +271,7 @@ const Manage_BD: FC = () => {
   ];
 
   // state
+  const [form] = Form.useForm();
   const [activeKey, setActiveKey] = useState('1');
   const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
   const {

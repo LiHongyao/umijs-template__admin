@@ -1,99 +1,134 @@
 import React, { FC, useEffect, useState } from 'react';
 import { ColumnProps } from 'antd/es/table';
-import { Table, Select, Input, InputNumber, Button, Modal, Space } from 'antd';
+import {
+  Table,
+  Select,
+  Input,
+  InputNumber,
+  Button,
+  Modal,
+  Space,
+  Form,
+} from 'antd';
 import { useBoolean } from '@umijs/hooks';
 
 type UserType = {
-  id: string;
-  account: string;
-  nikeName: string;
-  merchants: string;
-  business: string;
-  dPoint: number;
-  cPoint: number;
-  date: string;
+  key: any;
+  uid: string /** 用户ID */;
+  phone: string /** 手机账号 */;
+  nickName: string /** 用户微信昵称 */;
+  merchantName: string /** 锁客商家 */;
+  bdName: string /** 锁客BD名称 */;
+  bdPhone: string /** 锁客BD手机号 */;
+  dbeanBalance: number /** 账户D积分 */;
+  deductDbeanCount: number /** 历史消费D积分 */;
+  firstScanTime: string /** 首次扫码时间 */;
+};
+
+type FilterParamsType = {
+  bindPhone?: boolean;
+  bdUid?: string;
+  searchKey?: string;
 };
 
 const { Option } = Select;
-const { Search } = Input;
 
 const columns: ColumnProps<UserType>[] = [
   {
     title: '用户ID',
-    dataIndex: 'id',
-    key: 'id',
+    dataIndex: 'uid',
+    key: 'uid',
     align: 'center',
     fixed: 'left',
     width: 120,
   },
   {
     title: '手机账号',
-    dataIndex: 'account',
-    key: 'account',
+    dataIndex: 'phone',
+    key: 'phone',
     align: 'center',
   },
   {
     title: '用户微信昵称',
-    dataIndex: 'nikeName',
-    key: 'nikeName',
+    dataIndex: 'nickName',
+    key: 'nickName',
     align: 'center',
   },
   {
     title: '锁客商家',
-    dataIndex: 'merchants',
-    key: 'merchants',
+    dataIndex: 'merchantName',
+    key: 'merchantName',
     align: 'center',
   },
   {
+    width: 200,
     title: '锁客BD',
-    dataIndex: 'business',
-    key: 'business',
+    key: 'bd',
     align: 'center',
+    render: (record: UserType) => `${record.bdName} ${record.bdPhone}`,
   },
   {
     title: '账户D积分',
-    dataIndex: 'dPoint',
-    key: 'dPoint',
+    dataIndex: 'dbeanBalance',
+    key: 'dbeanBalance',
     defaultSortOrder: 'descend',
-    sorter: (rowA: UserType, rowB: UserType) => rowA.dPoint - rowB.dPoint,
+    sorter: (rowA: UserType, rowB: UserType) =>
+      rowA.dbeanBalance - rowB.dbeanBalance,
     align: 'center',
   },
   {
     title: '历史消费D积分',
-    dataIndex: 'cPoint',
-    key: 'cPoint',
+    dataIndex: 'deductDbeanCount',
+    key: 'deductDbeanCount',
     align: 'center',
   },
-  { title: '首次扫码时间', dataIndex: 'date', key: 'date', align: 'center' },
+  {
+    title: '首次扫码时间',
+    dataIndex: 'firstScanTime',
+    key: 'firstScanTime',
+    align: 'center',
+  },
 ];
-
-const dataSource: any[] = [];
-(function() {
-  for (let i = 0; i < 100; i++) {
-    dataSource.push({
-      key: i,
-      id: 'NO.0000x',
-      account: i % 4 === 0 ? '未激活手机' : '17398888669',
-      nikeName: '木子李',
-      merchants: '天猫超市',
-      business: '李鸿耀',
-      dPoint: 80000 + i,
-      cPoint: 60000 + i,
-      date: '2020/11/11 09:11:11',
-    });
-  }
-})();
 
 const Manage_User: FC = () => {
   // hooks
   const { state: modalVisible, toggle: toggleModalVisible } = useBoolean();
-  // const [dataSource, setDataSource] = useState();
+  // state
+  const [form] = Form.useForm();
+  const [dataSource, setDataSource] = useState<UserType[]>([]);
   const [page, setPage] = useState(1);
-  const [pageSize] = useState(20);
+  const [pageSize, setPageSize] = useState(20);
+  const [filterParams, setFilterParams] = useState<FilterParamsType>({});
+  const [loading, setLoading] = useState(false);
 
+  // effects
   useEffect(() => {
-    console.log(`加载第${page}页数据`);
-  }, [page]);
+    console.log(
+      `加载第${page}页数据，每页加载${pageSize}条数据，过滤参数为：`,
+      filterParams,
+    );
+    setLoading(true);
+    const tempArr: UserType[] = [];
+    for (let i = 0; i < 100; i++) {
+      tempArr.push({
+        key: i,
+        uid: 'NO.0000x',
+        phone: i % 10 === 0 ? '未激活手机' : '17398888669',
+        nickName: '木子李',
+        merchantName: '天猫超市',
+        bdName: '李鸿耀',
+        bdPhone: '15888899917',
+        dbeanBalance: 80000 + i,
+        deductDbeanCount: 60000 + i,
+        firstScanTime: '2020/11/11 09:11:11',
+      });
+    }
+    setTimeout(() => {
+      setDataSource(tempArr);
+      setLoading(false);
+    }, 1000);
+  }, [page, filterParams, pageSize]);
+
   // render
   return (
     <div className="page user ">
@@ -116,36 +151,44 @@ const Manage_User: FC = () => {
       {/* 过滤栏 */}
       <div className="site-filter-bar">
         {/* 左侧内容 */}
-        <Space size="large">
-          {/* 锁定BD */}
-          <section>
-            <span>锁定BD：</span>
-            <Select style={{ width: 120 }} defaultValue="全部">
-              <Option value="全部">全部</Option>
-              <Option value="李鸿耀">李鸿耀</Option>
-              <Option value="王理">王理</Option>
-            </Select>
-          </section>
-          {/* 是否已绑定手机 */}
-          <section>
-            <span>是否已绑定手机：</span>
-            <Select style={{ width: 120 }} defaultValue="全部">
-              <Option value="全部">全部</Option>
-              <Option value="已绑定">已绑定</Option>
-              <Option value="未绑定">未绑定</Option>
-            </Select>
-          </section>
-          {/* 搜索 */}
-          <section>
-            <Search
-              placeholder="商家名称/商家手机号"
-              style={{ width: 280 }}
-              allowClear
-              enterButton="搜索"
-              size="middle"
-            />
-          </section>
-        </Space>
+        <Form
+          form={form}
+          onFinish={(value: FilterParamsType) => setFilterParams(value)}
+        >
+          <Space size="large">
+            {/* 锁定BD */}
+            <Form.Item label="锁定BD：" name="bdUid">
+              <Select style={{ width: 120 }} placeholder="请选择" allowClear>
+                <Option value="李鸿耀">李鸿耀</Option>
+                <Option value="王理">王理</Option>
+                <Option value="卢鸶">卢鸶</Option>
+                <Option value="何凯">何凯</Option>
+              </Select>
+            </Form.Item>
+            {/* 是否已绑定手机 */}
+            <Form.Item label="是否已绑定手机：" name="bindPhone">
+              <Select style={{ width: 120 }} placeholder="请选择" allowClear>
+                <Option value={1}>已绑定</Option>
+                <Option value={0}>未绑定</Option>
+              </Select>
+            </Form.Item>
+            {/* 搜索 */}
+            <Form.Item label="搜索：" name="searchKey">
+              <Input
+                placeholder="商家名称/商家手机号"
+                style={{ width: 180 }}
+                allowClear
+                size="middle"
+              />
+            </Form.Item>
+            {/* 提交 */}
+            <Form.Item>
+              <Button htmlType="submit" type="primary">
+                搜索
+              </Button>
+            </Form.Item>
+          </Space>
+        </Form>
         {/* 右侧内容 */}
         <Space size="large">
           <span>
@@ -160,22 +203,26 @@ const Manage_User: FC = () => {
       </div>
       {/* 表格 */}
       <Table
+        loading={loading}
         columns={columns}
         dataSource={dataSource}
         bordered
         size="small"
-        scroll={{ y: 'calc(100vh - 300px)' }}
+        scroll={{ y: 'calc(100vh - 280px)' }}
         pagination={{
           current: page /** 当前页数 */,
           hideOnSinglePage: false /** 只有一页时是否隐藏分页器 */,
           pageSize: pageSize /** 每页条数 */,
-          pageSizeOptions: [] /** 指定每页可以显示多少条 */,
           showSizeChanger: true /** 是否展示 pageSize 切换器，当 total 大于 50 时默认为 true */,
           showQuickJumper: false /** 是否可以快速跳转至某页 */,
           total: dataSource.length,
           showTotal: (total: number, range: [number, number]) =>
             `共 ${total} 条`,
           onChange: (page: number) => setPage(page),
+          onShowSizeChange: (current: number, size: number) => {
+            setPageSize(size);
+            setPage(current);
+          },
         }}
       />
       {/* 模态框 */}

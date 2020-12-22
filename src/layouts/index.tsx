@@ -59,7 +59,7 @@ const Layouts: FC<IProps> = props => {
               className="logo"
               alt=""
             />
-            <div className="f16">D积分后台管理系统</div>
+            <div className="f16">后台管理系统模板</div>
           </div>
           {/* 菜单栏 */}
           <Menu theme="dark" mode="inline" selectedKeys={[location.pathname]}>
