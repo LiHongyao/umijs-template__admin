@@ -1,6 +1,15 @@
 import React, { FC, useState, useEffect } from 'react';
 import { ColumnProps } from 'antd/es/table';
-import { Table, Tabs, DatePicker, Input, Space, Form, Button } from 'antd';
+import {
+  Table,
+  Tabs,
+  DatePicker,
+  Input,
+  Space,
+  Form,
+  Button,
+  Modal,
+} from 'antd';
 import classNames from 'lg-classnames';
 import CityCascader from '@/components/CityCascader';
 import moment from 'moment';
@@ -14,6 +23,7 @@ type FilterParamsType = {
   searchKey?: string;
 };
 
+// 商家现金结算
 type AColumnsType = {
   key: string;
   orderNo: string /** 结算单号 */;
@@ -30,6 +40,7 @@ type AColumnsType = {
   status: number /** 结算状态 */;
   wechatNo: string /** 微信转账单号 */;
 };
+// D积分结算
 type BColumnsType = {
   key: string;
   orderNo: string /** 结算单号 */;
@@ -43,6 +54,7 @@ type BColumnsType = {
   status: number /** 结算状态 */;
   wechatNo: string /** 微信转账单号 */;
 };
+// BD业绩结算
 type CColumnsType = {
   key: string;
   orderNo: string /** 结算单号 */;
@@ -51,6 +63,22 @@ type CColumnsType = {
   amount: number /** 结算金额（元） */;
   status: number /** 结算状态 */;
   wechatNo: string /** 微信转账单号 */;
+};
+// 结算列表
+type DColumnsType = {
+  key: string;
+  serialNo: string /** 交易流水号 */;
+  date: string /** 交易时间 */;
+  area: string /** 交易地区 */;
+  uid: string /** 触发用户id */;
+  uName: string /** 触发用户 */;
+  merchantId: string /** 交易商家id */;
+  merchantName: string /** 交易商家 */;
+  totalAmount: number /** 订单总金额（元） */;
+  deductionDPoint: number /** 抵扣D积分 */;
+  payAmount: number /** 支付现金（元） */;
+  merchantDPoint: number /** 商家返D积分 */;
+  platformatDPoint: number /** 平台补贴D积分  */;
 };
 
 const CapitalSettlement: FC = () => {
@@ -150,7 +178,7 @@ const CapitalSettlement: FC = () => {
       title: '操作',
       align: 'center',
       fixed: 'right',
-      render: () => <a>详情</a>,
+      render: () => <a onClick={() => setDetailsModalVisile(true)}>结算详情</a>,
     },
   ];
   /** D积分结算  */
@@ -171,7 +199,6 @@ const CapitalSettlement: FC = () => {
       align: 'center',
     },
     {
-      width: 200,
       title: '结算商家 ',
       key: 'merchantName',
       align: 'center',
@@ -264,19 +291,97 @@ const CapitalSettlement: FC = () => {
       align: 'center',
     },
   ];
+  // 结算列表
+  const dColumns: ColumnProps<DColumnsType>[] = [
+    {
+      width: 150,
+      title: '结算单号',
+      dataIndex: 'serialNo',
+      key: 'serialNo',
+      align: 'center',
+      fixed: 'left',
+    },
+    {
+      width: 160,
+      title: '结算时间',
+      dataIndex: 'date',
+      key: 'date',
+      align: 'center',
+    },
+    {
+      width: 120,
+      title: '交易地区',
+      dataIndex: 'area',
+      key: 'area',
+      align: 'center',
+    },
+    {
+      width: 180,
+      title: '触发用户',
+      key: 'user',
+      align: 'center',
+      render: (record: DColumnsType) => `ID：${record.uid} ${record.uName}`,
+    },
+    {
+      width: 220,
+      title: '交易商家',
+      key: 'merchant',
+      align: 'center',
+      render: (record: DColumnsType) =>
+        `ID：${record.merchantId} ${record.merchantName}`,
+    },
+    {
+      width: 160,
+      title: '订单总金额（元）',
+      dataIndex: 'totalAmount',
+      key: 'totalAmount',
+      align: 'center',
+    },
+    {
+      width: 120,
+      title: '抵扣D积分',
+      dataIndex: 'deductionDPoint',
+      key: 'deductionDPoint',
+      align: 'center',
+    },
+    {
+      width: 120,
+      title: '支付现金（元）',
+      dataIndex: 'payAmount',
+      key: 'payAmount',
+      align: 'center',
+    },
+    {
+      width: 120,
+      title: '商家返D积分',
+      dataIndex: 'merchantDPoint',
+      key: 'merchantDPoint',
+      align: 'center',
+    },
+    {
+      width: 120,
+      title: '平台补贴D积分 ',
+      dataIndex: 'platformatDPoint',
+      key: 'platformatDPoint',
+      align: 'center',
+    },
+  ];
 
   // state
   const [form] = Form.useForm();
   const [activeKey, setActiveKey] = useState('1');
   const [filterParams, setFilterParams] = useState<FilterParamsType>({});
+  const [detailsModalVisible, setDetailsModalVisile] = useState(false);
 
   const [aDataSource, setADataSource] = useState<AColumnsType[]>([]);
   const [bDataSource, setBDataSource] = useState<BColumnsType[]>([]);
   const [cDataSource, setCDataSource] = useState<CColumnsType[]>([]);
+  const [dDataSource, setDDataSource] = useState<DColumnsType[]>([]);
 
   const [aTotal, setATotal] = useState(0);
   const [bTotal, setBTotal] = useState(0);
   const [cTotal, setCTotal] = useState(0);
+  const [dTotal, setDTotal] = useState(0);
 
   const [aPage, setAPage] = useState<DP.TablePageDataType<FilterParamsType>>(
     () => ({
@@ -293,6 +398,13 @@ const CapitalSettlement: FC = () => {
     }),
   );
   const [cPage, setCPage] = useState<DP.TablePageDataType<FilterParamsType>>(
+    () => ({
+      pageSize: 20,
+      page: 1,
+      filters: {},
+    }),
+  );
+  const [dPage, setDPage] = useState<DP.TablePageDataType<FilterParamsType>>(
     () => ({
       pageSize: 20,
       page: 1,
@@ -324,6 +436,33 @@ const CapitalSettlement: FC = () => {
     }
   };
   // effects
+  useEffect(() => {
+    let d: DColumnsType[] = [];
+    for (let i = 0; i < 66; i++) {
+      d.push({
+        key: `d___${i}`,
+        serialNo: '2989302032220',
+        date: '2020/11/11 23:11:11',
+        area: '成都武侯区',
+        uid: '83293239',
+        uName: '李鸿耀',
+        merchantId: 'KJ32KD',
+        merchantName: ' 佳佳之星超市',
+        totalAmount: 100,
+        deductionDPoint: 215,
+        payAmount: 97.85,
+        merchantDPoint: 10,
+        platformatDPoint: 5,
+      });
+    }
+    setDDataSource(d);
+    setDTotal(d.length);
+    console.log(`
+      请求数据
+      请求页码：${dPage.page}
+      每页条数：${dPage.pageSize}
+    `);
+  }, [dPage]);
   useEffect(() => {
     let startDate: string | undefined;
     let endDate: string | undefined;
@@ -643,6 +782,43 @@ const CapitalSettlement: FC = () => {
           />
         </TabPane>
       </Tabs>
+      {/* 结算详情 */}
+      <Modal
+        visible={detailsModalVisible}
+        title="结算详情"
+        width={`calc(100vw - 426px)`}
+        onOk={() => setDetailsModalVisile(false)}
+        onCancel={() => setDetailsModalVisile(false)}
+      >
+        <Table
+          columns={dColumns}
+          dataSource={dDataSource}
+          bordered
+          size="small"
+          scroll={{ y: 'calc(100vh - 400px)' }}
+          pagination={{
+            current: dPage.page /** 当前页数 */,
+            hideOnSinglePage: false /** 只有一页时是否隐藏分页器 */,
+            pageSize: dPage.pageSize /** 每页条数 */,
+            showSizeChanger: true /** 是否展示 pageSize 切换器，当 total 大于 50 时默认为 true */,
+            showQuickJumper: false /** 是否可以快速跳转至某页 */,
+            total: dTotal,
+            showTotal: (total: number, range: [number, number]) =>
+              `共 ${total} 条`,
+            onChange: (page: number) =>
+              setDPage(prev => ({
+                ...prev,
+                page,
+              })),
+            onShowSizeChange: (current: number, size: number) =>
+              setDPage(prev => ({
+                ...prev,
+                pageSize: size,
+                page: current,
+              })),
+          }}
+        />
+      </Modal>
     </div>
   );
 };

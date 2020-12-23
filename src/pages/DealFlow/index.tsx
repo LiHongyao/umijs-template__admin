@@ -62,6 +62,8 @@ type CColumnsType = {
   events: string /** 收入事件 */;
 };
 
+
+
 const { Option } = Select;
 const { TabPane } = Tabs;
 const { RangePicker } = DatePicker;
@@ -248,7 +250,6 @@ const DealFlow: FC = () => {
     }),
   );
 
-  
   // events
   const onFormFinish = (value: FilterParamsType) => {
     setFilterParams(value);
@@ -359,7 +360,7 @@ const DealFlow: FC = () => {
         break;
     }
   }, [activeKey, aPage, bPage, cPage]);
-  
+
   // render
   const renderTabBar = (props: any, DefaultTabBar: React.ComponentType) => {
     const tabInfos = props.panes.map((item: any) => {
