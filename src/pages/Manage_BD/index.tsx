@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { ColumnProps } from 'antd/es/table';
 import moment from 'moment';
 import {
@@ -23,63 +23,40 @@ const { RangePicker } = DatePicker;
 const { Search, TextArea } = Input;
 const { Option } = Select;
 
-type ApplyType = {
-  key: number;
-  submitDate: string;
-  name: string;
-  phone: string;
-  from: string;
-  introduce: string;
-  note: string;
-};
-type CertifiedType = {
-  key: number;
-  certifiedDate: string;
-  name: string;
-  phone: string;
-  from: string;
-  wechat: string;
-  bdm: string;
-  merchants: number;
-  guest: number;
-  tasks: number;
-  balance: number;
-  remark: string;
+// 过滤数据类型
+type FilterParamsType = {
+  date?: any[];
+  city?: string[];
+  searchKey?: string;
+  bdmUid?: string;
 };
 
-const applyDatasource: ApplyType[] = [];
-const certifiedDataSource: CertifiedType[] = [];
+// 最新申请
+type AColumnsType = {
+  key: string;
+  date: string /** 提交时间    */;
+  name: string /** 姓名 */;
+  phone: string /** 手机号 */;
+  area: string /** 城市/区县 */;
+  introduction: string /** 个人介绍 */;
+  note: string /** 备注 */;
+};
 
-(function() {
-  for (let i = 0; i < 100; i++) {
-    applyDatasource.push({
-      key: i,
-      submitDate: '2020/11/11',
-      name: '李鸿耀',
-      phone: '17398888669',
-      from: '成都/高新区',
-      introduce:
-        '帅哥的卡萨就打开了的健康路撒即可得了拉萨的记录卡倒计时咔经典款拉数据枯鲁杜鹃快来撒简历打开',
-      note: '超级大帅哥',
-    });
-  }
-  for (let i = 0; i < 100; i++) {
-    certifiedDataSource.push({
-      key: i,
-      certifiedDate: '2020/11/11 09:11:32',
-      name: '李鸿耀',
-      phone: '17398888669',
-      from: '成都 武侯区',
-      wechat: 'Li-HONGYAO',
-      bdm: '王理',
-      merchants: 7,
-      guest: 18978,
-      tasks: 2032,
-      balance: 100003,
-      remark: '有',
-    });
-  }
-})();
+// 已认证BD
+type BColumnsType = {
+  key: string;
+  date: string /** 认证时间 */;
+  name: string /** 姓名 */;
+  phone: string /** 手机号 */;
+  area: string /** 城市/区县 */;
+  wechat: string /** 绑定微信 */;
+  bdm: string /** 对接BDM  */;
+  merchantNum: number /**  负责商家数量（家） */;
+  guests: number /** 锁客（人） */;
+  tasks: number /** 完成佣金任务（次） */;
+  balance: number /** 余额（元） */;
+  note: string /** 备注 */;
+};
 
 const settleDatas = [
   { merchantName: '佳佳便利店', amount: 100, key: 0 },
@@ -108,18 +85,19 @@ const Manage_BD: FC = () => {
       key: 'amount',
     },
   ];
-  const applyColumns: ColumnProps<ApplyType>[] = [
+  const aColumns: ColumnProps<AColumnsType>[] = [
     {
       width: 60,
       title: '序号',
       align: 'center',
-      render: (text: ApplyType, record: ApplyType, index) => `${index + 1}`,
+      render: (text: AColumnsType, record: AColumnsType, index) =>
+        `${index + 1}`,
     },
     {
-      width: 120,
+      width: 180,
       title: '提交时间',
-      dataIndex: 'submitDate',
-      key: 'submitDate',
+      dataIndex: 'date',
+      key: 'date',
       align: 'center',
     },
     {
@@ -139,69 +117,81 @@ const Manage_BD: FC = () => {
     {
       width: 120,
       title: '城市/区县',
-      dataIndex: 'from',
-      key: 'from',
+      dataIndex: 'area',
+      key: 'area',
       align: 'center',
     },
     {
       title: '个人介绍',
-      dataIndex: 'introduce',
-      key: 'introduce',
+      dataIndex: 'introduction',
+      key: 'introduction',
       align: 'center',
-      render: (introduce: string) => (
-        <Tooltip title={introduce}>
-          <div className="line-clamp-2 text-left">{introduce}</div>
+      render: (introduction: string) => (
+        <Tooltip title={introduction}>
+          <div className="line-clamp-1 text-left">{introduction}</div>
         </Tooltip>
       ),
     },
     {
-      width: 200,
+      width: 80,
       title: '备注',
-      dataIndex: 'note',
-      key: 'note',
       align: 'center',
+      key: 'note',
+      dataIndex: 'note',
+      render: (record: string) => {
+        return record.length > 0 ? (
+          <a onClick={showRemark}>有</a>
+        ) : (
+          <span>无</span>
+        );
+      },
     },
   ];
-  const certifiedColumns: ColumnProps<CertifiedType>[] = [
+  const bColumns: ColumnProps<BColumnsType>[] = [
     {
       width: 60,
       title: '序号',
       align: 'center',
-      render: (text: CertifiedType, record: CertifiedType, index) =>
+      render: (text: BColumnsType, record: BColumnsType, index) =>
         `${index + 1}`,
     },
     {
-      width: 200,
+      width: 180,
       title: '认证时间',
       align: 'center',
-      dataIndex: 'certifiedDate',
-      key: 'certifiedDate',
+      dataIndex: 'date',
+      key: 'date',
     },
     {
+      width: 100,
       title: '姓名',
       align: 'center',
       dataIndex: 'name',
       key: 'name',
     },
     {
+      width: 120,
       title: '手机号',
       align: 'center',
       dataIndex: 'phone',
       key: 'phone',
     },
     {
+      width: 120,
       title: '城市/区县',
       align: 'center',
-      dataIndex: 'from',
-      key: 'from',
+      dataIndex: 'area',
+      key: 'area',
     },
     {
+      width: 200,
       title: '绑定微信',
       align: 'center',
       dataIndex: 'wechat',
       key: 'wechat',
     },
     {
+      width: 100,
       title: '对接BDM',
       align: 'center',
       dataIndex: 'bdm',
@@ -211,14 +201,15 @@ const Manage_BD: FC = () => {
       width: 160,
       title: '负责商家数量（家）',
       align: 'center',
-      dataIndex: 'merchants',
-      key: 'merchants',
+      dataIndex: 'merchantNum',
+      key: 'merchantNum',
     },
     {
+      width: 100,
       title: '锁客（人）',
       align: 'center',
-      dataIndex: 'guest',
-      key: 'guest',
+      dataIndex: 'guests',
+      key: 'guests',
     },
     {
       width: 160,
@@ -228,30 +219,32 @@ const Manage_BD: FC = () => {
       key: 'tasks',
     },
     {
+      width: 100,
       title: '余额（元）',
       align: 'center',
       dataIndex: 'balance',
       key: 'balance',
     },
     {
+      width: 80,
       title: '备注',
       align: 'center',
-      dataIndex: 'remark',
-      key: 'remark',
-      render: record => {
-        return record === '有' ? (
-          <a onClick={showRemark}>{record}</a>
+      key: 'note',
+      dataIndex: 'note',
+      render: (record: string) => {
+        return record.length > 0 ? (
+          <a onClick={showRemark}>有</a>
         ) : (
-          <span>{record}</span>
+          <span>无</span>
         );
       },
     },
     {
+      width: 160,
       title: '操作',
       align: 'center',
       key: 'operation',
       fixed: 'right',
-      width: 160,
       render: () => (
         <Space size="small">
           <Button
@@ -271,9 +264,33 @@ const Manage_BD: FC = () => {
   ];
 
   // state
+
   const [form] = Form.useForm();
   const [activeKey, setActiveKey] = useState('1');
+  const [filterParams, setFilterParams] = useState<FilterParamsType>({});
   const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
+
+  const [aDataSource, setADataSource] = useState<AColumnsType[]>([]);
+  const [bDataSource, setBDataSource] = useState<BColumnsType[]>([]);
+
+  const [aTotal, setATotal] = useState(0);
+  const [bTotal, setBTotal] = useState(0);
+
+  const [aPage, setAPage] = useState<DP.TablePageDataType<FilterParamsType>>(
+    () => ({
+      pageSize: 20,
+      page: 1,
+      filters: {},
+    }),
+  );
+  const [bPage, setBPage] = useState<DP.TablePageDataType<FilterParamsType>>(
+    () => ({
+      pageSize: 20,
+      page: 1,
+      filters: {},
+    }),
+  );
+
   const {
     state: bdDetailsVisible,
     setTrue: showBdDetails,
@@ -289,7 +306,87 @@ const Manage_BD: FC = () => {
     setTrue: showRemark,
     setFalse: hideRemark,
   } = useBoolean();
+
   // events
+  const onFormFinish = (value: FilterParamsType) => {
+    setFilterParams(value);
+    switch (activeKey) {
+      case '1':
+        setAPage(prev => ({
+          ...prev,
+          filters: value,
+        }));
+        break;
+      case '2':
+        setBPage(prev => ({
+          ...prev,
+          filters: value,
+        }));
+        break;
+    }
+  };
+  // effects
+  useEffect(() => {
+    let startDate: string | undefined;
+    let endDate: string | undefined;
+    if (filterParams.date) {
+      startDate = filterParams.date[0].format('YYYY-MM-DD');
+      endDate = filterParams.date[1].format('YYYY-MM-DD');
+    }
+    switch (activeKey) {
+      case '1':
+        let a: AColumnsType[] = [];
+        for (let i = 0; i < 66; i++) {
+          a.push({
+            key: `a___${i}`,
+            date: '2020/11/11 23:11:11 ',
+            name: '李鸿耀',
+            phone: '17398888669',
+            area: '成都武侯区',
+            introduction:
+              '天将降大任于斯人也，必先苦其心志，劳其筋骨，饿其体肤，空乏其身，行拂乱其所为。所以动心忍性，增益其所不能。',
+            note: '曾经沧海难为水，疑是银河落九天。',
+          });
+        }
+        setADataSource(a);
+        setATotal(a.length);
+        console.log(`
+          请求数据
+          请求页码：${aPage.page}
+          每页条数：${aPage.pageSize}
+          过滤数据：${JSON.stringify(aPage.filters)}
+        `);
+        break;
+      case '2':
+        let b: BColumnsType[] = [];
+        for (let i = 0; i < 88; i++) {
+          b.push({
+            key: `b___${i}`,
+            date: '2020/11/11 23:11:11 ',
+            name: '李鸿耀',
+            phone: '17398888669',
+            area: '成都武侯区',
+            merchantNum: 100,
+            guests: 99999,
+            tasks: 1000,
+            balance: 300,
+            note: '曾经沧海难为水，疑是银河落九天。',
+            wechat: 'Li_HONGYAO',
+            bdm: '周杰伦',
+          });
+        }
+        setBDataSource(b);
+        setBTotal(b.length);
+        console.log(`
+          请求数据
+          请求页码：${bPage.page}
+          每页条数：${bPage.pageSize}
+          过滤数据：${JSON.stringify(bPage.filters)}
+        `);
+        break;
+    }
+  }, [activeKey, aPage, bPage]);
+
   // render
   const renderTabBar = (props: any, DefaultTabBar: React.ComponentType) => {
     const tabInfos = props.panes.map((item: any) => {
@@ -309,7 +406,21 @@ const Manage_BD: FC = () => {
                   { active: activeKey === item.key },
                 ])}
                 key={item.key}
-                onClick={() => setActiveKey(item.key)}
+                onClick={() => {
+                  // 点击tab项时，更新activekey，并且将对应tab过滤数据复制
+                  setActiveKey(item.key);
+                  switch (item.key) {
+                    case '1':
+                      setFilterParams(aPage.filters);
+                      break;
+                    case '2':
+                      setFilterParams(bPage.filters);
+                      break;
+                  }
+                  setTimeout(() => {
+                    form.resetFields();
+                  }, 0);
+                }}
               >
                 {item.title}
               </section>
@@ -337,53 +448,52 @@ const Manage_BD: FC = () => {
         </div>
         {/* 过滤栏 */}
         <div className="site-filter-bar">
-          <Space size="large">
-            {/* 锁定BD */}
-            <section>
-              <span>时间：</span>
-              <RangePicker
-                disabledDate={current => {
-                  return current && current > moment().endOf('day');
-                }}
-              />
-            </section>
-            {/* 城市区域 */}
-            <section>
-              <span>城市区域：</span>
-              <CityCascader
-                onChange={value => {
-                  console.log(value);
-                }}
-              />
-            </section>
-            {/* BDM */}
-            {activeKey === '2' && (
-              <section>
-                <span>BDM：</span>
-                <Select style={{ width: 120 }} defaultValue="全部">
-                  <Option key="B1" value="全部">
-                    全部
-                  </Option>
-                  <Option key="B2" value="已绑定">
-                    已绑定
-                  </Option>
-                  <Option key="B3" value="未绑定">
-                    未绑定
-                  </Option>
-                </Select>
-              </section>
-            )}
-            {/* 搜索 */}
-            <section>
-              <Search
-                placeholder="BD姓名/手机号"
-                style={{ width: 220 }}
-                allowClear
-                enterButton="搜索"
-                size="middle"
-              />
-            </section>
-          </Space>
+          <Form
+            form={form}
+            onFinish={onFormFinish}
+            initialValues={filterParams}
+            autoComplete="off"
+          >
+            <Space size="large">
+              {/* 锁定BD */}
+              <Form.Item label="时间：" name="date">
+                {/* 限制只能选取当日之前的日期 */}
+                <RangePicker
+                  disabledDate={current =>
+                    current && current > moment().subtract(1, 'days')
+                  }
+                />
+              </Form.Item>
+              {/* 城市区域 */}
+              <Form.Item label="城市区域：" name="city">
+                <CityCascader />
+              </Form.Item>
+              {/* BDM */}
+              {activeKey === '2' && (
+                <Form.Item label="BD：" name="bdmUid">
+                  <Select placeholder="请选择" allowClear>
+                    <Option value="李鸿耀">李鸿耀</Option>
+                    <Option value="王理">王理</Option>
+                  </Select>
+                </Form.Item>
+              )}
+              {/* 搜索 */}
+              <Form.Item label="搜索：" name="searchKey">
+                <Input
+                  placeholder="商家名称/商家手机号"
+                  style={{ width: 180 }}
+                  allowClear
+                  size="middle"
+                />
+              </Form.Item>
+              {/* 提交 */}
+              <Form.Item>
+                <Button htmlType="submit" type="primary" size="middle">
+                  搜索
+                </Button>
+              </Form.Item>
+            </Space>
+          </Form>
         </div>
       </>
     );
@@ -399,22 +509,61 @@ const Manage_BD: FC = () => {
       >
         <TabPane tab="最新申请" key="1">
           <Table
-            columns={applyColumns}
-            dataSource={applyDatasource}
+            columns={aColumns}
+            dataSource={aDataSource}
             bordered
             size="small"
-            scroll={{ y: 'calc(100vh - 300px)' }}
+            scroll={{ y: 'calc(100vh - 280px)' }}
+            pagination={{
+              current: aPage.page /** 当前页数 */,
+              hideOnSinglePage: false /** 只有一页时是否隐藏分页器 */,
+              pageSize: aPage.pageSize /** 每页条数 */,
+              showSizeChanger: true /** 是否展示 pageSize 切换器，当 total 大于 50 时默认为 true */,
+              showQuickJumper: false /** 是否可以快速跳转至某页 */,
+              total: aTotal,
+              showTotal: (total: number, range: [number, number]) =>
+                `共 ${total} 条`,
+              onChange: (page: number) =>
+                setAPage(prev => ({
+                  ...prev,
+                  page,
+                })),
+              onShowSizeChange: (current: number, size: number) =>
+                setAPage(prev => ({
+                  ...prev,
+                  pageSize: size,
+                  page: current,
+                })),
+            }}
           />
         </TabPane>
         <TabPane tab="已认证BD" key="2">
           <Table
-            scroll={{ x: 1700, y: 'calc(100vh - 300px)' }}
-            columns={certifiedColumns}
-            dataSource={certifiedDataSource}
+            columns={bColumns}
+            dataSource={bDataSource}
             bordered
             size="small"
+            scroll={{ y: 'calc(100vh - 280px)' }}
             pagination={{
-              pageSize: 12,
+              current: bPage.page /** 当前页数 */,
+              hideOnSinglePage: false /** 只有一页时是否隐藏分页器 */,
+              pageSize: bPage.pageSize /** 每页条数 */,
+              showSizeChanger: true /** 是否展示 pageSize 切换器，当 total 大于 50 时默认为 true */,
+              showQuickJumper: false /** 是否可以快速跳转至某页 */,
+              total: bTotal,
+              showTotal: (total: number, range: [number, number]) =>
+                `共 ${total} 条`,
+              onChange: (page: number) =>
+                setBPage(prev => ({
+                  ...prev,
+                  page,
+                })),
+              onShowSizeChange: (current: number, size: number) =>
+                setBPage(prev => ({
+                  ...prev,
+                  pageSize: size,
+                  page: current,
+                })),
             }}
           />
         </TabPane>
@@ -509,6 +658,7 @@ const Manage_BD: FC = () => {
           dataSource={settleDatas}
           style={{ marginTop: 12 }}
           pagination={false}
+          scroll={{y: `calc(100vh - 450px)`}}
           rowSelection={{
             type: 'checkbox',
             onChange: selectedRowKeys => {
@@ -516,17 +666,21 @@ const Manage_BD: FC = () => {
             },
             selectedRowKeys,
           }}
-          summary={() => {
-            return (
-              <Table.Summary.Row>
-                <Table.Summary.Cell index={0}>结算：</Table.Summary.Cell>
-                <Table.Summary.Cell index={1}>
-                  <span className="f18 f-bold">200元</span>
-                </Table.Summary.Cell>
-              </Table.Summary.Row>
-            );
-          }}
+          // summary={() => {
+          //   return (
+          //     <Table.Summary.Row>
+          //       <Table.Summary.Cell index={0}>结算：</Table.Summary.Cell>
+          //       <Table.Summary.Cell index={1}>
+          //         <span className="f18 f-bold">200元</span>
+          //       </Table.Summary.Cell>
+          //     </Table.Summary.Row>
+          //   );
+          // }}
         />
+        <div className="mt-12">
+          <span>结算：</span>
+          <span className="f18 f-bold">200元</span>
+        </div>
       </Modal>
       {/* 备注 */}
       <Modal

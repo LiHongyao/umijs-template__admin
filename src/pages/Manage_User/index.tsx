@@ -96,20 +96,26 @@ const Manage_User: FC = () => {
   // state
   const [form] = Form.useForm();
   const [dataSource, setDataSource] = useState<UserType[]>([]);
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(20);
-  const [filterParams, setFilterParams] = useState<FilterParamsType>({});
+  const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
-
+  const [page, setPage] = useState<DP.TablePageDataType<FilterParamsType>>(
+    () => ({
+      pageSize: 20,
+      page: 1,
+      filters: {},
+    }),
+  );
   // effects
   useEffect(() => {
-    console.log(
-      `加载第${page}页数据，每页加载${pageSize}条数据，过滤参数为：`,
-      filterParams,
-    );
     setLoading(true);
+    console.log(`
+      请求数据
+      请求页码：${page.page}
+      每页条数：${page.pageSize}
+      过滤数据：${JSON.stringify(page.filters)}
+    `);
     const tempArr: UserType[] = [];
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 88; i++) {
       tempArr.push({
         key: i,
         uid: 'NO.0000x',
@@ -125,9 +131,10 @@ const Manage_User: FC = () => {
     }
     setTimeout(() => {
       setDataSource(tempArr);
+      setTotal(tempArr.length);
       setLoading(false);
     }, 1000);
-  }, [page, filterParams, pageSize]);
+  }, [page]);
 
   // render
   return (
@@ -153,7 +160,13 @@ const Manage_User: FC = () => {
         {/* 左侧内容 */}
         <Form
           form={form}
-          onFinish={(value: FilterParamsType) => setFilterParams(value)}
+          autoComplete="off"
+          onFinish={(value: FilterParamsType) =>
+            setPage(prev => ({
+              ...prev,
+              filters: value,
+            }))
+          }
         >
           <Space size="large">
             {/* 锁定BD */}
@@ -210,19 +223,25 @@ const Manage_User: FC = () => {
         size="small"
         scroll={{ y: 'calc(100vh - 280px)' }}
         pagination={{
-          current: page /** 当前页数 */,
+          current: page.page /** 当前页数 */,
           hideOnSinglePage: false /** 只有一页时是否隐藏分页器 */,
-          pageSize: pageSize /** 每页条数 */,
+          pageSize: page.pageSize /** 每页条数 */,
           showSizeChanger: true /** 是否展示 pageSize 切换器，当 total 大于 50 时默认为 true */,
           showQuickJumper: false /** 是否可以快速跳转至某页 */,
-          total: dataSource.length,
+          total: total,
           showTotal: (total: number, range: [number, number]) =>
             `共 ${total} 条`,
-          onChange: (page: number) => setPage(page),
-          onShowSizeChange: (current: number, size: number) => {
-            setPageSize(size);
-            setPage(current);
-          },
+          onChange: (page: number) =>
+            setPage(prev => ({
+              ...prev,
+              page,
+            })),
+          onShowSizeChange: (current: number, size: number) =>
+            setPage(prev => ({
+              ...prev,
+              pageSize: size,
+              page: current,
+            })),
         }}
       />
       {/* 模态框 */}

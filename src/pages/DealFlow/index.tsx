@@ -377,8 +377,8 @@ const DealFlow: FC = () => {
                 ])}
                 key={item.key}
                 onClick={() => {
+                  // 点击tab项时，更新activekey，并且将对应tab过滤数据复制
                   setActiveKey(item.key);
-
                   switch (item.key) {
                     case '1':
                       setFilterParams(aPage.filters);
