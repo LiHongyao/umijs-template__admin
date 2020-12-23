@@ -20,7 +20,7 @@ import CityCascader from '@/components/CityCascader';
 
 const { TabPane } = Tabs;
 const { RangePicker } = DatePicker;
-const { Search, TextArea } = Input;
+const { TextArea } = Input;
 const { Option } = Select;
 
 // 过滤数据类型

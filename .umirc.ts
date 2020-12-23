@@ -50,6 +50,12 @@ export default defineConfig({
           path: '/manage-bd',
           component: '@/pages/Manage_BD',
         },
+        // 资金结算
+        {
+          exact: true,
+          path: '/capital-settlement',
+          component: '@/pages/CapitalSettlement',
+        },
         { path: '*', component: '@/pages/404' },
       ],
     },

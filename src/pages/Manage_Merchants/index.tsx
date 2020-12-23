@@ -1,7 +1,6 @@
 import React, { FC, useState, useEffect } from 'react';
 import {
   Input,
-  Select,
   Table,
   Space,
   Modal,
@@ -9,16 +8,18 @@ import {
   Button,
   InputNumber,
   Form,
+  Cascader,
 } from 'antd';
 import { ColumnProps } from 'antd/es/table';
+import { CascaderOptionType } from 'antd/es/cascader';
 import CityCascader from '@/components/CityCascader';
 
-const { Search } = Input;
-const { Option } = Select;
+
 
 type FilterParamsType = {
   city?: string;
   bdUid?: string;
+  type?: string[];
   searchKey?: string;
 };
 
@@ -40,6 +41,11 @@ type ColumnsType = {
   deductionThreshold: number /** 抵扣门槛 */;
   maximumDeductible: number /** 最高可抵扣 */;
 };
+type OptionsType = {
+  value: string;
+  label: string;
+  isLeaf: boolean;
+};
 
 const Manage_Merchants: FC = () => {
   // state
@@ -47,6 +53,7 @@ const Manage_Merchants: FC = () => {
     merchantDetailsModalVisible,
     setMerchantDetailsModalVisible,
   ] = useState(false);
+  const [options, setOptions] = useState<OptionsType[]>([]);
   const [settlementModalVisible, setSettlementModalVisible] = useState(false);
   const [disabled, setDisabled] = useState(true);
   const [form] = Form.useForm();
@@ -62,7 +69,45 @@ const Manage_Merchants: FC = () => {
   );
 
   // events
+  const onLoadData = (selectedOptions?: CascaderOptionType[]) => {
+    if (selectedOptions) {
+      const targetOption = selectedOptions[selectedOptions.length - 1];
+      targetOption.loading = true;
+      setTimeout(() => {
+        targetOption.loading = false;
+        targetOption.children = [
+          {
+            label: '二级类型A',
+            value: '二级类型A',
+          },
+          {
+            label: `二级类型B`,
+            value: '二级类型B',
+          },
+          {
+            label: `二级类型C`,
+            value: '二级类型C',
+          },
+        ];
+        setOptions([...options]);
+      }, 1000);
+    }
+  };
   // effects
+  useEffect(() => {
+    setOptions([
+      {
+        value: '一级类型A',
+        label: '一级类型A',
+        isLeaf: false,
+      },
+      {
+        value: '一级类型B',
+        label: '一级类型B',
+        isLeaf: false,
+      },
+    ]);
+  }, []);
   useEffect(() => {
     setLoading(true);
     console.log(`
@@ -258,11 +303,17 @@ const Manage_Merchants: FC = () => {
         >
           <Space size="large">
             {/* 城市区域 */}
-            {/* 城市区域 */}
             <Form.Item label="城市区域：" name="city">
               <CityCascader />
             </Form.Item>
             {/* 类型 */}
+            <Form.Item label="类型：" name="type">
+              <Cascader
+                options={options}
+                loadData={onLoadData}
+                changeOnSelect
+              />
+            </Form.Item>
             {/* 搜索 */}
             <Form.Item label="搜索：" name="searchKey">
               <Input
