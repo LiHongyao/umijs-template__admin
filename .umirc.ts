@@ -1,3 +1,9 @@
+/*
+ * @Description: 
+ * @Author: Li-HONGYAO
+ * @Date: 2020-11-19 17:24:26
+ * @LastEditTime: 2020-12-29 10:43:01
+ */
 import { defineConfig } from 'umi';
 
 export default defineConfig({
@@ -5,6 +11,7 @@ export default defineConfig({
     type: 'none',
   },
   dva: {},
+  ignoreMomentLocale: true,
   routes: [
     {
       exact: true,

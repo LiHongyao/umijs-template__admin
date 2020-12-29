@@ -14,8 +14,6 @@ import { ColumnProps } from 'antd/es/table';
 import { CascaderOptionType } from 'antd/es/cascader';
 import CityCascader from '@/components/CityCascader';
 
-
-
 type FilterParamsType = {
   city?: string;
   bdUid?: string;
@@ -24,7 +22,6 @@ type FilterParamsType = {
 };
 
 type ColumnsType = {
-  key: string;
   id: string /** 商家ID */;
   from: string /** 城市区域 */;
   merchantName: string /** 商家名称  */;
@@ -119,8 +116,7 @@ const Manage_Merchants: FC = () => {
     const tempArr: ColumnsType[] = [];
     for (let i = 0; i < 88; i++) {
       tempArr.push({
-        key: `a__${i}`,
-        id: 'NO.0000',
+        id: 'NO.000' + i,
         from: '成都 武侯区',
         merchantName: '天猫超市',
         merchantType: '便利店',
@@ -337,6 +333,7 @@ const Manage_Merchants: FC = () => {
         loading={loading}
         columns={columns}
         dataSource={dataSource}
+        rowKey="id"
         bordered
         size="small"
         scroll={{ y: 'calc(100vh - 280px)' }}

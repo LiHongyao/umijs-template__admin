@@ -95,8 +95,8 @@ const Layouts: FC<IProps> = props => {
             <Space size="large">
               <span>
                 {moment()
-                  .locale('zh-cn')
-                  .format('YYYY年MM月DD日 dddd')}
+                  .locale('zh')
+                  .format('YYYY年MM月DD日 星期e')}
               </span>
               <Dropdown
                 trigger={['click']}
