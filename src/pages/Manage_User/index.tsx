@@ -36,29 +36,24 @@ const columns: ColumnProps<UserType>[] = [
   {
     title: '用户ID',
     dataIndex: 'uid',
-    align: 'center',
     fixed: 'left',
     width: 120,
   },
   {
     title: '手机账号',
-    dataIndex: 'phone',
-    align: 'center',
+    dataIndex: 'phone'
   },
   {
     title: '用户微信昵称',
-    dataIndex: 'nickName',
-    align: 'center',
+    dataIndex: 'nickName'
   },
   {
     title: '锁客商家',
-    dataIndex: 'merchantName',
-    align: 'center',
+    dataIndex: 'merchantName'
   },
   {
     width: 200,
     title: '锁客BD',
-    align: 'center',
     render: (record: UserType) => `${record.bdName} ${record.bdPhone}`,
   },
   {
@@ -66,18 +61,15 @@ const columns: ColumnProps<UserType>[] = [
     dataIndex: 'dbeanBalance',
     defaultSortOrder: 'descend',
     sorter: (rowA: UserType, rowB: UserType) =>
-      rowA.dbeanBalance - rowB.dbeanBalance,
-    align: 'center',
+      rowA.dbeanBalance - rowB.dbeanBalance
   },
   {
     title: '历史消费D积分',
-    dataIndex: 'deductDbeanCount',
-    align: 'center',
+    dataIndex: 'deductDbeanCount'
   },
   {
     title: '首次扫码时间',
-    dataIndex: 'firstScanTime',
-    align: 'center',
+    dataIndex: 'firstScanTime'
   },
 ];
 

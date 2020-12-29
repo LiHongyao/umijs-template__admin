@@ -32,6 +32,12 @@ const Login: FC<IProps> = props => {
   // render
   return (
     <div className="page login">
+      <div className="rotate-box">
+        <img
+          src={require('../../assets/images/earth.png')}
+          className="rotate-img"
+        ></img>
+      </div>
       <Particles
         params={{
           particles: {

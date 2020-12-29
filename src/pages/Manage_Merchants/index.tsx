@@ -149,92 +149,77 @@ const Manage_Merchants: FC = () => {
       width: 100,
       title: '商家ID',
       dataIndex: 'id',
-      align: 'center',
       fixed: 'left',
     },
     {
       width: 120,
       title: '城市区域',
-      dataIndex: 'from',
-      align: 'center',
+      dataIndex: 'from'
     },
     {
-      width: 200,
+      width: 100,
       title: '商家类型',
-      dataIndex: 'merchantType',
-      align: 'center',
+      dataIndex: 'merchantType'
     },
     {
-      width: 200,
+      width: 120,
       title: '商家名称',
-      dataIndex: 'merchantName',
-      align: 'center',
+      dataIndex: 'merchantName'
     },
     {
       width: 80,
       title: '服务',
-      dataIndex: 'service',
-      align: 'center',
+      dataIndex: 'service'
     },
     {
       width: 100,
       title: '锁客（人）',
-      dataIndex: 'lockGuests',
-      align: 'center',
+      dataIndex: 'lockGuests'
     },
     {
       width: 120,
       title: '现金余额（元）',
-      dataIndex: 'cashBalance',
-      align: 'center',
+      dataIndex: 'cashBalance'
     },
     {
       width: 120,
       title: 'D豆余额',
-      dataIndex: 'dbeanBalance',
-      align: 'center',
+      dataIndex: 'dbeanBalance'
     },
     {
       width: 120,
       title: '商家返豆/笔',
-      dataIndex: 'merchantBack',
-      align: 'center',
+      dataIndex: 'merchantBack'
     },
     {
       width: 120,
       title: '平台返豆/笔',
-      dataIndex: 'platformBack',
-      align: 'center',
+      dataIndex: 'platformBack'
     },
     {
       width: 180,
       title: '平台补贴上限/天（D豆）',
-      dataIndex: 'subsidies',
-      align: 'center',
+      dataIndex: 'subsidies'
     },
     {
       width: 180,
       title: '签到商家奖励/次（D豆）',
-      dataIndex: 'rewardSignInMerchants',
-      align: 'center',
+      dataIndex: 'rewardSignInMerchants'
     },
     {
       width: 180,
       title: '签到平台奖励/次（D豆）',
-      dataIndex: 'platformRewards',
-      align: 'center',
+      dataIndex: 'platformRewards'
     },
     {
       width: 160,
       title: '起抵门槛/笔（元）',
-      dataIndex: 'deductionThreshold',
-      align: 'center',
+      dataIndex: 'deductionThreshold'
     },
     {
       width: 180,
       title: '最高可抵/笔（D豆）',
-      dataIndex: 'maximumDeductible',
-      align: 'center',
+      dataIndex: 'maximumDeductible'
     },
     {
       title: '操作',

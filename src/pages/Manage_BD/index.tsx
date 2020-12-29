@@ -89,43 +89,32 @@ const Manage_BD: FC = () => {
     {
       width: 60,
       title: '序号',
-      align: 'center',
       render: (text: AColumnsType, record: AColumnsType, index) =>
         `${index + 1}`,
     },
     {
       width: 180,
       title: '提交时间',
-      dataIndex: 'date',
-      key: 'date',
-      align: 'center',
+      dataIndex: 'date'
     },
     {
       width: 100,
       title: '姓名',
-      dataIndex: 'name',
-      key: 'name',
-      align: 'center',
+      dataIndex: 'name'
     },
     {
       width: 120,
       title: '手机号',
-      dataIndex: 'phone',
-      key: 'phone',
-      align: 'center',
+      dataIndex: 'phone'
     },
     {
       width: 120,
       title: '城市/区县',
-      dataIndex: 'area',
-      key: 'area',
-      align: 'center',
+      dataIndex: 'area'
     },
     {
       title: '个人介绍',
       dataIndex: 'introduction',
-      key: 'introduction',
-      align: 'center',
       render: (introduction: string) => (
         <Tooltip title={introduction}>
           <div className="line-clamp-1 text-left">{introduction}</div>
@@ -133,10 +122,8 @@ const Manage_BD: FC = () => {
       ),
     },
     {
-      width: 80,
+      width: 60,
       title: '备注',
-      align: 'center',
-      key: 'note',
       dataIndex: 'note',
       render: (record: string) => {
         return record.length > 0 ? (
@@ -151,85 +138,62 @@ const Manage_BD: FC = () => {
     {
       width: 60,
       title: '序号',
-      align: 'center',
       render: (text: BColumnsType, record: BColumnsType, index) =>
         `${index + 1}`,
     },
     {
       width: 180,
       title: '认证时间',
-      align: 'center',
       dataIndex: 'date',
-      key: 'date',
     },
     {
       width: 100,
       title: '姓名',
-      align: 'center',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'name'
     },
     {
       width: 120,
       title: '手机号',
-      align: 'center',
-      dataIndex: 'phone',
-      key: 'phone',
+      dataIndex: 'phone'
     },
     {
       width: 120,
       title: '城市/区县',
-      align: 'center',
-      dataIndex: 'area',
-      key: 'area',
+      dataIndex: 'area'
     },
     {
       width: 200,
       title: '绑定微信',
-      align: 'center',
-      dataIndex: 'wechat',
-      key: 'wechat',
+      dataIndex: 'wechat'
     },
     {
       width: 100,
       title: '对接BDM',
-      align: 'center',
-      dataIndex: 'bdm',
-      key: 'bdm',
+      dataIndex: 'bdm'
     },
     {
       width: 160,
       title: '负责商家数量（家）',
-      align: 'center',
-      dataIndex: 'merchantNum',
-      key: 'merchantNum',
+      dataIndex: 'merchantNum'
     },
     {
       width: 100,
       title: '锁客（人）',
-      align: 'center',
-      dataIndex: 'guests',
-      key: 'guests',
+      dataIndex: 'guests'
     },
     {
       width: 160,
       title: '完成佣金任务（次）',
-      align: 'center',
-      dataIndex: 'tasks',
-      key: 'tasks',
+      dataIndex: 'tasks'
     },
     {
       width: 100,
       title: '余额（元）',
-      align: 'center',
-      dataIndex: 'balance',
-      key: 'balance',
+      dataIndex: 'balance'
     },
     {
       width: 80,
       title: '备注',
-      align: 'center',
-      key: 'note',
       dataIndex: 'note',
       render: (record: string) => {
         return record.length > 0 ? (

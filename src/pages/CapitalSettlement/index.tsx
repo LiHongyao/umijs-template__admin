@@ -89,89 +89,65 @@ const CapitalSettlement: FC = () => {
       width: 150,
       title: '结算单号',
       dataIndex: 'orderNo',
-      key: 'orderNo',
-      align: 'center',
       fixed: 'left',
     },
     {
       width: 160,
       title: '结算时间',
-      dataIndex: 'date',
-      key: 'date',
-      align: 'center',
+      dataIndex: 'date'
     },
     {
       width: 200,
       title: '结算商家 ',
-      key: 'merchantName',
-      align: 'center',
       render: (record: AColumnsType) =>
         `ID：${record.merchantId} ${record.merchantName}`,
     },
     {
       width: 120,
       title: '商家所属区域',
-      dataIndex: 'area',
-      key: 'area',
-      align: 'center',
+      dataIndex: 'area'
     },
     {
       width: 100,
       title: '所属BD ',
-      dataIndex: 'bd',
-      key: 'bd',
-      align: 'center',
+      dataIndex: 'bd'
     },
     {
       width: 100,
       title: '累计订单',
-      dataIndex: 'orderNum',
-      key: 'orderNum',
-      align: 'center',
+      dataIndex: 'orderNum'
     },
     {
       width: 160,
       title: '商家累计收款（元）',
-      dataIndex: 'collection',
-      key: 'collection',
-      align: 'center',
+      dataIndex: 'collection'
     },
     {
       width: 120,
       title: '累计返D积分',
-      dataIndex: 'dPoint',
-      key: 'dPoint',
-      align: 'center',
+      dataIndex: 'dPoint'
     },
     {
       width: 120,
       title: '结算金额（元）',
-      dataIndex: 'amount',
-      key: 'amount',
-      align: 'center',
+      dataIndex: 'amount'
     },
     {
       width: 100,
       title: '结算类型',
-      dataIndex: 'type',
-      key: 'type',
-      align: 'center',
+      dataIndex: 'type'
     },
     {
       width: 100,
       title: '结算状态  ',
       dataIndex: 'status',
-      key: 'status',
-      align: 'center',
       render: (status: number) =>
         status === 0 ? '结算中' : status === 1 ? '已结算' : '结算失败',
     },
     {
       width: 130,
       title: '微信转账单号',
-      dataIndex: 'wechatNo',
-      key: 'wechatNo',
-      align: 'center',
+      dataIndex: 'wechatNo'
     },
     {
       width: 80,
@@ -187,67 +163,49 @@ const CapitalSettlement: FC = () => {
       width: 150,
       title: '结算单号',
       dataIndex: 'orderNo',
-      key: 'orderNo',
-      align: 'center',
       fixed: 'left',
     },
     {
       width: 160,
       title: '结算时间',
-      dataIndex: 'date',
-      key: 'date',
-      align: 'center',
+      dataIndex: 'date'
     },
     {
       width: 200,
       title: '结算商家 ',
-      key: 'merchantName',
-      align: 'center',
       render: (record: BColumnsType) =>
         `ID：${record.merchantId} ${record.merchantName}`,
     },
     {
       width: 120,
       title: '商家所属区域',
-      dataIndex: 'area',
-      key: 'area',
-      align: 'center',
+      dataIndex: 'area'
     },
     {
       width: 90,
       title: '所属BD ',
-      dataIndex: 'bd',
-      key: 'bd',
-      align: 'center',
+      dataIndex: 'bd'
     },
     {
       width: 100,
       title: '结算D积分',
-      dataIndex: 'dPoint',
-      key: 'dPoint',
-      align: 'center',
+      dataIndex: 'dPoint'
     },
     {
       width: 120,
       title: '结算金额（元）',
-      dataIndex: 'amount',
-      key: 'amount',
-      align: 'center',
+      dataIndex: 'amount'
     },
     {
       width: 90,
       title: '结算状态  ',
       dataIndex: 'status',
-      key: 'status',
-      align: 'center',
       render: (status: number) =>
         status === 0 ? '结算中' : status === 1 ? '已结算' : '结算失败',
     },
     {
       title: '微信转账单号',
-      dataIndex: 'wechatNo',
-      key: 'wechatNo',
-      align: 'center',
+      dataIndex: 'wechatNo'
     },
   ];
   // BD业绩结算
@@ -255,41 +213,29 @@ const CapitalSettlement: FC = () => {
     {
       title: '结算单号',
       dataIndex: 'orderNo',
-      key: 'orderNo',
-      align: 'center',
       fixed: 'left',
     },
     {
       title: '结算时间',
-      dataIndex: 'date',
-      key: 'date',
-      align: 'center',
+      dataIndex: 'date'
     },
     {
       title: '结算BD ',
-      dataIndex: 'bd',
-      key: 'bd',
-      align: 'center',
+      dataIndex: 'bd'
     },
     {
       title: '结算金额（元）',
-      dataIndex: 'amount',
-      key: 'amount',
-      align: 'center',
+      dataIndex: 'amount'
     },
     {
       title: '结算状态  ',
       dataIndex: 'status',
-      key: 'status',
-      align: 'center',
       render: (status: number) =>
         status === 0 ? '结算中' : status === 1 ? '已结算' : '结算失败',
     },
     {
       title: '微信转账单号',
-      dataIndex: 'wechatNo',
-      key: 'wechatNo',
-      align: 'center',
+      dataIndex: 'wechatNo'
     },
   ];
   // 结算列表
@@ -298,73 +244,53 @@ const CapitalSettlement: FC = () => {
       width: 150,
       title: '结算单号',
       dataIndex: 'serialNo',
-      key: 'serialNo',
-      align: 'center',
       fixed: 'left',
     },
     {
       width: 160,
       title: '结算时间',
-      dataIndex: 'date',
-      key: 'date',
-      align: 'center',
+      dataIndex: 'date'
     },
     {
       width: 120,
       title: '交易地区',
-      dataIndex: 'area',
-      key: 'area',
-      align: 'center',
+      dataIndex: 'area'
     },
     {
       width: 180,
       title: '触发用户',
-      key: 'user',
-      align: 'center',
       render: (record: DColumnsType) => `ID：${record.uid} ${record.uName}`,
     },
     {
       width: 220,
       title: '交易商家',
-      key: 'merchant',
-      align: 'center',
       render: (record: DColumnsType) =>
         `ID：${record.merchantId} ${record.merchantName}`,
     },
     {
       width: 160,
       title: '订单总金额（元）',
-      dataIndex: 'totalAmount',
-      key: 'totalAmount',
-      align: 'center',
+      dataIndex: 'totalAmount'
     },
     {
       width: 120,
       title: '抵扣D积分',
-      dataIndex: 'deductionDPoint',
-      key: 'deductionDPoint',
-      align: 'center',
+      dataIndex: 'deductionDPoint'
     },
     {
       width: 120,
       title: '支付现金（元）',
-      dataIndex: 'payAmount',
-      key: 'payAmount',
-      align: 'center',
+      dataIndex: 'payAmount'
     },
     {
       width: 120,
       title: '商家返D积分',
-      dataIndex: 'merchantDPoint',
-      key: 'merchantDPoint',
-      align: 'center',
+      dataIndex: 'merchantDPoint'
     },
     {
       width: 120,
       title: '平台补贴D积分 ',
-      dataIndex: 'platformatDPoint',
-      key: 'platformatDPoint',
-      align: 'center',
+      dataIndex: 'platformatDPoint'
     },
   ];
 

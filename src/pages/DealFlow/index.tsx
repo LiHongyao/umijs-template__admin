@@ -73,35 +73,27 @@ const DealFlow: FC = () => {
   const aColumns: ColumnProps<AColumnsType>[] = [
     {
       width: 280,
-      align: 'center',
       title: '交易流水号',
-      key: 'serialNo',
       dataIndex: 'serialNo',
     },
     {
       width: 150,
-      align: 'center',
       title: '交易时间',
-      key: 'date',
       dataIndex: 'date',
     },
     {
       width: 100,
-      align: 'center',
       title: '交易地区',
-      key: 'area',
       dataIndex: 'area',
     },
     {
       width: 220,
-      align: 'center',
       title: '触发用户',
       key: 'uid',
       render: (record: AColumnsType) => `ID：${record.uid} ${record.userName}`,
     },
     {
       width: 240,
-      align: 'center',
       title: '交易商家',
       key: 'merchantName',
       render: (record: AColumnsType) =>
@@ -109,14 +101,11 @@ const DealFlow: FC = () => {
     },
     {
       width: 150,
-      align: 'center',
       title: '订单总金额（元）',
-      key: 'orderAmount',
       dataIndex: 'orderAmount',
     },
     {
       width: 200,
-      align: 'center',
       title: '抵扣D积分',
       key: 'deductDbeans',
       render: (record: AColumnsType) =>
@@ -124,94 +113,69 @@ const DealFlow: FC = () => {
     },
     {
       width: 120,
-      align: 'center',
       title: '支付现金（元）',
-      key: 'payAmount',
       dataIndex: 'payAmount',
     },
     {
       width: 110,
-      align: 'center',
       title: '商家返D积分',
-      key: 'merchantRebateDbeans',
       dataIndex: 'merchantRebateDbeans',
     },
     {
       width: 120,
-      align: 'center',
       title: '平台补贴D积分',
-      key: 'platformRebateDbeans',
       dataIndex: 'platformRebateDbeans',
     },
   ];
   const bColumns: ColumnProps<BColumnsType>[] = [
     {
-      align: 'center',
       title: '签到时间',
-      key: 'time',
       dataIndex: 'time',
     },
     {
-      align: 'center',
       title: '签到地区',
-      key: 'area',
       dataIndex: 'area',
     },
     {
-      align: 'center',
       title: '触发用户',
       key: 'uid',
       render: (record: BColumnsType) => `ID：${record.uid} ${record.userName}`,
     },
     {
-      align: 'center',
       title: '签到商家',
       key: 'merchantName',
       render: (record: BColumnsType) =>
         `ID：${record.merchantId} ${record.merchantName}`,
     },
     {
-      align: 'center',
       title: '商家补贴D积分',
-      key: 'merchantRebateDbeans',
       dataIndex: 'merchantRebateDbeans',
     },
     {
-      align: 'center',
       title: '平台补贴D积分',
-      key: 'platformRebateDbeans',
       dataIndex: 'platformRebateDbeans',
     },
   ];
   const cColumns: ColumnProps<CColumnsType>[] = [
     {
-      align: 'center',
       title: '收入时间',
-      key: 'date',
       dataIndex: 'date',
     },
     {
-      align: 'center',
       title: '收入BD',
       key: 'bd',
       render: (record: CColumnsType) => `${record.bdName} ${record.bdPhone}`,
     },
     {
-      align: 'center',
       title: '收入金额（元）',
-      key: 'amount',
       dataIndex: 'amount',
     },
     {
-      align: 'center',
       title: '触发商家',
-      key: 'merchantName',
       dataIndex: 'merchantName',
     },
     {
-      align: 'center',
       title: '收入事件',
-      key: 'events',
       dataIndex: 'events',
     },
   ];

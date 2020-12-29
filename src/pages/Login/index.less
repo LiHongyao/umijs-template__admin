@@ -1,20 +1,51 @@
-.login {
-  background-color: #000;
-  
+@keyframes rotate {
+  0% {
+    transform: rotateZ(0) scale(0);
+  }
+  8% {
+    transform: rotateZ(32deg) scale(1);
+  }
+
+  100% {
+    transform: rotateZ(360deg);
+  }
 }
+
+.login {
+  position: relative;
+  background-image: url('../../assets/images/bg.png');
+  background-size: cover;
+  overflow: hidden;
+}
+
+.rotate-box {
+  width: 40%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  .rotate-img {
+    width: 100%;
+    animation: rotate 80s linear infinite;
+    background: url('../../assets/images/earth.png') no-repeat center center;
+    background-size: cover;
+  
+  }
+}
+
 .login-wrapper {
   width: 500px;
   height: 300px;
   padding: 0 80px;
-  background: linear-gradient(45deg, #222222 -10%, #444444 120%);
+  background: rgba(68, 68, 68, 0.5);
   border-radius: 8px;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-
+  z-index: 3;
   .title {
-    color: #F1F1F1;
+    color: #f1f1f1;
     margin-top: 12px;
     margin-bottom: 30px;
     letter-spacing: 2px;
@@ -22,6 +53,6 @@
   }
 
   .ant-form-item-explain.ant-form-item-explain-error {
-    color: rgba(255, 255, 255, .75);
+    color: rgba(255, 255, 255, 0.75);
   }
 }
