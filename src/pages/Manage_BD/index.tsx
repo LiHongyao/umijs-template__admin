@@ -400,7 +400,8 @@ const Manage_BD: FC = () => {
         <div className="site-top-bar">
           <div className="site-top-bar__menu">
             {tabInfos.map((item: { key: string; title: string }) => (
-              <section
+              <Button
+                type="text"
                 className={classNames([
                   'site-top-bar__menu_item',
                   { active: activeKey === item.key },
@@ -423,7 +424,7 @@ const Manage_BD: FC = () => {
                 }}
               >
                 {item.title}
-              </section>
+              </Button>
             ))}
           </div>
           {/* 额外信息 */}

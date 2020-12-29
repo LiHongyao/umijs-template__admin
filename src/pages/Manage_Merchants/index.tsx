@@ -21,6 +21,7 @@ type FilterParamsType = {
   searchKey?: string;
 };
 
+// 列表数据类型
 type ColumnsType = {
   id: string /** 商家ID */;
   from: string /** 城市区域 */;
@@ -38,6 +39,8 @@ type ColumnsType = {
   deductionThreshold: number /** 抵扣门槛 */;
   maximumDeductible: number /** 最高可抵扣 */;
 };
+
+// 选择项数据类型
 type OptionsType = {
   value: string;
   label: string;
@@ -66,6 +69,7 @@ const Manage_Merchants: FC = () => {
   );
 
   // events
+  // 加载列表数据
   const onLoadData = (selectedOptions?: CascaderOptionType[]) => {
     if (selectedOptions) {
       const targetOption = selectedOptions[selectedOptions.length - 1];
@@ -145,7 +149,6 @@ const Manage_Merchants: FC = () => {
       width: 100,
       title: '商家ID',
       dataIndex: 'id',
-      key: 'id',
       align: 'center',
       fixed: 'left',
     },
@@ -153,98 +156,84 @@ const Manage_Merchants: FC = () => {
       width: 120,
       title: '城市区域',
       dataIndex: 'from',
-      key: 'from',
       align: 'center',
     },
     {
       width: 200,
       title: '商家类型',
       dataIndex: 'merchantType',
-      key: 'merchantType',
       align: 'center',
     },
     {
       width: 200,
       title: '商家名称',
       dataIndex: 'merchantName',
-      key: 'merchantName',
       align: 'center',
     },
     {
       width: 80,
       title: '服务',
       dataIndex: 'service',
-      key: 'service',
       align: 'center',
     },
     {
       width: 100,
       title: '锁客（人）',
       dataIndex: 'lockGuests',
-      key: 'lockGuests',
       align: 'center',
     },
     {
       width: 120,
       title: '现金余额（元）',
       dataIndex: 'cashBalance',
-      key: 'cashBalance',
       align: 'center',
     },
     {
       width: 120,
       title: 'D豆余额',
       dataIndex: 'dbeanBalance',
-      key: 'dbeanBalance',
       align: 'center',
     },
     {
       width: 120,
       title: '商家返豆/笔',
       dataIndex: 'merchantBack',
-      key: 'merchantBack',
       align: 'center',
     },
     {
       width: 120,
       title: '平台返豆/笔',
       dataIndex: 'platformBack',
-      key: 'platformBack',
       align: 'center',
     },
     {
       width: 180,
       title: '平台补贴上限/天（D豆）',
       dataIndex: 'subsidies',
-      key: 'subsidies',
       align: 'center',
     },
     {
       width: 180,
       title: '签到商家奖励/次（D豆）',
       dataIndex: 'rewardSignInMerchants',
-      key: 'rewardSignInMerchants',
       align: 'center',
     },
     {
       width: 180,
       title: '签到平台奖励/次（D豆）',
       dataIndex: 'platformRewards',
-      key: 'platformRewards',
       align: 'center',
     },
     {
       width: 160,
       title: '起抵门槛/笔（元）',
       dataIndex: 'deductionThreshold',
-      key: 'deductionThreshold',
       align: 'center',
     },
     {
       width: 180,
       title: '最高可抵/笔（D豆）',
       dataIndex: 'maximumDeductible',
-      key: 'maximumDeductible',
       align: 'center',
     },
     {

@@ -13,7 +13,6 @@ import {
 import { useBoolean } from '@umijs/hooks';
 
 type UserType = {
-  key: any;
   uid: string /** 用户ID */;
   phone: string /** 手机账号 */;
   nickName: string /** 用户微信昵称 */;
@@ -37,7 +36,6 @@ const columns: ColumnProps<UserType>[] = [
   {
     title: '用户ID',
     dataIndex: 'uid',
-    key: 'uid',
     align: 'center',
     fixed: 'left',
     width: 120,
@@ -45,32 +43,27 @@ const columns: ColumnProps<UserType>[] = [
   {
     title: '手机账号',
     dataIndex: 'phone',
-    key: 'phone',
     align: 'center',
   },
   {
     title: '用户微信昵称',
     dataIndex: 'nickName',
-    key: 'nickName',
     align: 'center',
   },
   {
     title: '锁客商家',
     dataIndex: 'merchantName',
-    key: 'merchantName',
     align: 'center',
   },
   {
     width: 200,
     title: '锁客BD',
-    key: 'bd',
     align: 'center',
     render: (record: UserType) => `${record.bdName} ${record.bdPhone}`,
   },
   {
     title: '账户D积分',
     dataIndex: 'dbeanBalance',
-    key: 'dbeanBalance',
     defaultSortOrder: 'descend',
     sorter: (rowA: UserType, rowB: UserType) =>
       rowA.dbeanBalance - rowB.dbeanBalance,
@@ -79,13 +72,11 @@ const columns: ColumnProps<UserType>[] = [
   {
     title: '历史消费D积分',
     dataIndex: 'deductDbeanCount',
-    key: 'deductDbeanCount',
     align: 'center',
   },
   {
     title: '首次扫码时间',
     dataIndex: 'firstScanTime',
-    key: 'firstScanTime',
     align: 'center',
   },
 ];
@@ -117,8 +108,7 @@ const Manage_User: FC = () => {
     const tempArr: UserType[] = [];
     for (let i = 0; i < 88; i++) {
       tempArr.push({
-        key: i,
-        uid: 'NO.0000x',
+        uid: 'NO.000' + i,
         phone: i % 10 === 0 ? '未激活手机' : '17398888669',
         nickName: '木子李',
         merchantName: '天猫超市',

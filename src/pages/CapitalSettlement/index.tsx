@@ -199,6 +199,7 @@ const CapitalSettlement: FC = () => {
       align: 'center',
     },
     {
+      width: 200,
       title: '结算商家 ',
       key: 'merchantName',
       align: 'center',
@@ -527,26 +528,7 @@ const CapitalSettlement: FC = () => {
         `);
         break;
       case '3':
-        let c: CColumnsType[] = [];
-        for (let i = 0; i < 75; i++) {
-          c.push({
-            key: `c___${i}`,
-            orderNo: '2989302032220',
-            date: '2020/11/11 23:11:11',
-            bd: '周杰伦',
-            amount: 900.0,
-            status: 1,
-            wechatNo: '2989302032220',
-          });
-        }
-        setCDataSource(c);
-        setCTotal(c.length);
-        console.log(`
-          请求数据
-          请求页码：${cPage.page}
-          每页条数：${cPage.pageSize}
-          过滤数据：${JSON.stringify(cPage.filters)}
-        `);
+        
         break;
     }
   }, [activeKey, aPage, bPage, cPage]);
@@ -563,7 +545,9 @@ const CapitalSettlement: FC = () => {
         <div className="site-top-bar">
           <div className="site-top-bar__menu">
             {tabInfos.map((item: { key: string; title: string }) => (
-              <section
+              <Button
+                type="text"
+                disabled={item.key === '3'}
                 className={classNames([
                   'site-top-bar__menu_item',
                   { active: activeKey === item.key },
@@ -589,7 +573,7 @@ const CapitalSettlement: FC = () => {
                 }}
               >
                 {item.title}
-              </section>
+              </Button>
             ))}
           </div>
           {/* 额外信息 */}
