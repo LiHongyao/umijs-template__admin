@@ -6,7 +6,8 @@
     "test": "cross-env UMI_ENV=test umi build",
     "postinstall": "umi generate tmp",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
-    "test:coverage": "umi-test --coverage"
+    "test:coverage": "umi-test --coverage",
+    "up": "yarn upgrade-interactive --latest"
   },
   "gitHooks": {
     "pre-commit": "lint-staged"
@@ -20,22 +21,22 @@
     ]
   },
   "dependencies": {
-    "@ant-design/pro-layout": "^5.0.12",
+    "@ant-design/pro-layout": "^6.9.5",
     "@umijs/hooks": "^1.9.3",
-    "@umijs/preset-react": "1.x",
-    "@umijs/test": "^3.2.27",
+    "@umijs/preset-react": "1.7.9",
+    "@umijs/test": "^3.3.3",
     "crypto-js": "^4.0.0",
     "echarts": "^5.0.0",
     "lg-classnames": "^1.0.4",
     "lg-cookie": "^1.0.1",
-    "lg-tools": "^1.0.6",
-    "lint-staged": "^10.0.7",
+    "lg-tools": "^1.0.11",
+    "lint-staged": "^10.5.3",
     "moment": "^2.29.1",
-    "prettier": "^1.19.1",
+    "prettier": "^2.2.1",
     "react": "^17.0.1",
-    "react-dom": "^16.12.0",
+    "react-dom": "^17.0.1",
     "react-particles-js": "^3.4.1",
-    "umi": "^3.2.27",
+    "umi": "^3.3.3",
     "yorkie": "^2.0.0"
   },
   "devDependencies": {

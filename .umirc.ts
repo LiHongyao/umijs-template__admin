@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Li-HONGYAO
  * @Date: 2020-11-19 17:24:26
- * @LastEditTime: 2020-12-29 10:43:01
+ * @LastEditTime: 2020-12-30 18:45:15
  */
 import { defineConfig } from 'umi';
 
@@ -12,6 +12,14 @@ export default defineConfig({
   },
   dva: {},
   ignoreMomentLocale: true,
+  dynamicImport: {
+    /** 动态加载loading */
+    loading: '@/Loading',
+  },
+  /** 配置是否让生成的文件包含 hash 后缀，通常用于增量发布和避免浏览器加载缓存 */
+  hash: true,
+  /** 路由模式 */
+  history: { type: 'browser' },
   routes: [
     {
       exact: true,

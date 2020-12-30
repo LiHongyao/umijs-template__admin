@@ -15,10 +15,6 @@ html, body, #root {
   box-sizing: border-box;
 }
 
-a { text-decoration: none !important; }
-img { vertical-align: middle; }
-input { outline: none; border: none; }
-ul, li { list-style: none;}
 
 
 
@@ -43,13 +39,7 @@ ul, li { list-style: none;}
 .bg-373C3C { background-color: #373C3C; }
 
 
-/*
-//////////////////////////////
-/// 「 元素背景 」           
-//////////////////////////////
-*/
-.bg-cover  { background-size: cover !important;}
-.bg-contain { background-size: contain !important; }
+
 
 /*
 //////////////////////////////
@@ -387,45 +377,7 @@ ul, li { list-style: none;}
 .f38 { font-size: 38px; }
 .f50 { font-size: 50px; }
 
-/*
-//////////////////////////////
-/// 「 字符间距 」           
-//////////////////////////////
-*/
-.ls-1 { letter-spacing: 1px;}
-.ls-2 { letter-spacing: 2px;}
 
-/*
-//////////////////////////////
-/// 「 圆角 」           
-//////////////////////////////
-*/
-.rounded-4  { border-radius: 4px; }
-.rounded-2  { border-radius: 2px; }
-.rounded-6  { border-radius: 6px; }
-.rounded-8  { border-radius: 8px; }
-.rounded-9  { border-radius: 9px; }
-.rounded-10 { border-radius: 10px;}
-.rounded-12 { border-radius: 12px;}
-.rounded-13 { border-radius: 13px;}
-.rounded-14 { border-radius: 14px;}
-.rounded-18 { border-radius: 18px;}
-.rounded-22 { border-radius: 22px;}
-.rounded-24 { border-radius: 24px;}
-.rounded-25 { border-radius: 25px;}
-.rounded-49 { border-radius: 49px;}
-.rounded-76 { border-radius: 76px;}
-.rounded-circle { border-radius: 50%; }
-
-
-.rounded-tl-9 { border-top-left-radius: 9px; }
-.rounded-tl-11 { border-top-left-radius: 11px; }
-.rounded-tl-14 { border-top-left-radius: 14px;}
-
-
-.rounded-bl-9 { border-bottom-left-radius: 9px;}
-.rounded-bl-11 { border-bottom-left-radius: 11px;}
-.rounded-tr-14 { border-top-right-radius: 14px;}
 
 
 /*
@@ -651,18 +603,14 @@ ul, li { list-style: none;}
 }
 
 
-.rich-html * {
-  max-width: 100% !important;
-}
-
-.rich-html img {
-  height: auto !important;
-}
 
 .shrink {
 	flex-shrink: 0;
 }
 
+
+/* 光标 */
+.cursor-pointer { cursor: pointer;}
 
 /* 加载动画 */
 .lazy-loading {
@@ -672,10 +620,4 @@ ul, li { list-style: none;}
 	color: #FFB80D;
 	font-size: 14px;
 }
-
-
-/* 光标 */
-.cursor-pointer { cursor: pointer;}
-
-
 
