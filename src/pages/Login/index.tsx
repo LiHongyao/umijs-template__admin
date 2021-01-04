@@ -142,7 +142,7 @@ const Login: FC<IProps> = props => {
       <div className="login-wrapper pt-20">
         <Row justify="center">
           <Col>
-            <h2 className="title mb-0 css2513cee11522c9a">D积分后台管理系统</h2>
+            <h2 className="title">耀哥·后台管理系统模板</h2>
           </Col>
         </Row>
         <Form form={form} name="basic" onFinish={onLogin} autoComplete="off">

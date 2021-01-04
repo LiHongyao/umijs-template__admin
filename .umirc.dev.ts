@@ -1,7 +1,7 @@
 /*
  * @Author: Li-HONGYAO
  * @Date: 2020-11-19 20:00:28
- * @LastEditTime: 2021-01-04 17:15:19
+ * @LastEditTime: 2021-01-04 18:06:56
  * @LastEditors: Li-HONGYAO
  * @Description: 
  * @FilePath: /umijs-template__admin/.umirc.dev.ts
@@ -16,10 +16,8 @@ let HOST = {
 }
 
 export default defineConfig({
-  base: '/d-admin/',
-  publicPath: '/d-admin/',
   define: {
-    "process.env.BASE": '/d-admin',
+    "process.env.BASE": '',
     "process.env.NAME": 'development',
     "process.env.HOST": HOST.后台A
   },

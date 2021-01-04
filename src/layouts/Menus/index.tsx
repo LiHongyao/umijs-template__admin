@@ -61,7 +61,7 @@ const Menus: FC = () => {
           className="logo"
           alt=""
         />
-        <h1 className="title css2513cee11522c9a">D积分后台管理系统</h1>
+        <h1 className="title css2513cee11522c9a">后台管理系统模板</h1>
       </div>
       {/* 菜单栏 */}
       <Menu
