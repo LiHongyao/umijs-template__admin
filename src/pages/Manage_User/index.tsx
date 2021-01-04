@@ -204,6 +204,7 @@ const Manage_User: FC = () => {
         bordered
         size="small"
         scroll={{ y: 'calc(100vh - 280px)' }}
+        rowKey="uid"
         pagination={{
           current: page.page /** 当前页数 */,
           hideOnSinglePage: false /** 只有一页时是否隐藏分页器 */,

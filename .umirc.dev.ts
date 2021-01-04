@@ -1,3 +1,11 @@
+/*
+ * @Author: Li-HONGYAO
+ * @Date: 2020-11-19 20:00:28
+ * @LastEditTime: 2021-01-04 17:15:19
+ * @LastEditors: Li-HONGYAO
+ * @Description: 
+ * @FilePath: /umijs-template__admin/.umirc.dev.ts
+ */
 import { defineConfig } from 'umi';
 
 // 开发中，可能配置了多个后端人员，为了方便操作
@@ -8,7 +16,10 @@ let HOST = {
 }
 
 export default defineConfig({
+  base: '/d-admin/',
+  publicPath: '/d-admin/',
   define: {
+    "process.env.BASE": '/d-admin',
     "process.env.NAME": 'development',
     "process.env.HOST": HOST.后台A
   },
