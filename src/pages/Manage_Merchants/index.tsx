@@ -9,6 +9,7 @@ import {
   InputNumber,
   Form,
   Cascader,
+  message,
 } from 'antd';
 import { ColumnProps } from 'antd/es/table';
 import { CascaderOptionType } from 'antd/es/cascader';
@@ -59,7 +60,6 @@ const Manage_Merchants: FC = () => {
   const [form] = Form.useForm();
   const [dataSource, setDataSource] = useState<ColumnsType[]>([]);
   const [total, setTotal] = useState(0);
-  const [loading, setLoading] = useState(false);
   const [page, setPage] = useState<DP.TablePageDataType<FilterParamsType>>(
     () => ({
       pageSize: 20,
@@ -110,13 +110,13 @@ const Manage_Merchants: FC = () => {
     ]);
   }, []);
   useEffect(() => {
-    setLoading(true);
     console.log(`
     请求数据
     请求页码：${page.page}
     每页条数：${page.pageSize}
     过滤数据：${JSON.stringify(page.filters)}
   `);
+    message.loading('数据加载中...');
     const tempArr: ColumnsType[] = [];
     for (let i = 0; i < 88; i++) {
       tempArr.push({
@@ -140,8 +140,8 @@ const Manage_Merchants: FC = () => {
     setTimeout(() => {
       setDataSource(tempArr);
       setTotal(tempArr.length);
-      setLoading(false);
-    }, 100);
+      message.destroy();
+    }, 1000);
   }, [page]);
   // 数据源
   const columns: ColumnProps<ColumnsType>[] = [
@@ -154,72 +154,72 @@ const Manage_Merchants: FC = () => {
     {
       width: 120,
       title: '城市区域',
-      dataIndex: 'from'
+      dataIndex: 'from',
     },
     {
       width: 100,
       title: '商家类型',
-      dataIndex: 'merchantType'
+      dataIndex: 'merchantType',
     },
     {
       width: 120,
       title: '商家名称',
-      dataIndex: 'merchantName'
+      dataIndex: 'merchantName',
     },
     {
       width: 80,
       title: '服务',
-      dataIndex: 'service'
+      dataIndex: 'service',
     },
     {
       width: 100,
       title: '锁客（人）',
-      dataIndex: 'lockGuests'
+      dataIndex: 'lockGuests',
     },
     {
       width: 120,
       title: '现金余额（元）',
-      dataIndex: 'cashBalance'
+      dataIndex: 'cashBalance',
     },
     {
       width: 120,
       title: 'D豆余额',
-      dataIndex: 'dbeanBalance'
+      dataIndex: 'dbeanBalance',
     },
     {
       width: 120,
       title: '商家返豆/笔',
-      dataIndex: 'merchantBack'
+      dataIndex: 'merchantBack',
     },
     {
       width: 120,
       title: '平台返豆/笔',
-      dataIndex: 'platformBack'
+      dataIndex: 'platformBack',
     },
     {
       width: 180,
       title: '平台补贴上限/天（D豆）',
-      dataIndex: 'subsidies'
+      dataIndex: 'subsidies',
     },
     {
       width: 180,
       title: '签到商家奖励/次（D豆）',
-      dataIndex: 'rewardSignInMerchants'
+      dataIndex: 'rewardSignInMerchants',
     },
     {
       width: 180,
       title: '签到平台奖励/次（D豆）',
-      dataIndex: 'platformRewards'
+      dataIndex: 'platformRewards',
     },
     {
       width: 160,
       title: '起抵门槛/笔（元）',
-      dataIndex: 'deductionThreshold'
+      dataIndex: 'deductionThreshold',
     },
     {
       width: 180,
       title: '最高可抵/笔（D豆）',
-      dataIndex: 'maximumDeductible'
+      dataIndex: 'maximumDeductible',
     },
     {
       title: '操作',
@@ -265,7 +265,7 @@ const Manage_Merchants: FC = () => {
           form={form}
           autoComplete="off"
           onFinish={(value: FilterParamsType) =>
-            setPage(prev => ({
+            setPage((prev) => ({
               ...prev,
               filters: value,
             }))
@@ -304,7 +304,6 @@ const Manage_Merchants: FC = () => {
       </div>
       {/* 表格 */}
       <Table
-        loading={loading}
         columns={columns}
         dataSource={dataSource}
         rowKey="id"
@@ -321,12 +320,12 @@ const Manage_Merchants: FC = () => {
           showTotal: (total: number, range: [number, number]) =>
             `共 ${total} 条`,
           onChange: (page: number) =>
-            setPage(prev => ({
+            setPage((prev) => ({
               ...prev,
               page,
             })),
           onShowSizeChange: (current: number, size: number) =>
-            setPage(prev => ({
+            setPage((prev) => ({
               ...prev,
               pageSize: size,
               page: current,

@@ -9,6 +9,7 @@ import {
   Space,
   Form,
   Button,
+  message,
 } from 'antd';
 import { ColumnProps } from 'antd/es/table';
 import classNames from 'lg-classnames';
@@ -61,8 +62,6 @@ type CColumnsType = {
   merchantName: string /** 触发商家 */;
   events: string /** 收入事件 */;
 };
-
-
 
 const { Option } = Select;
 const { TabPane } = Tabs;
@@ -219,19 +218,19 @@ const DealFlow: FC = () => {
     setFilterParams(value);
     switch (activeKey) {
       case '1':
-        setAPage(prev => ({
+        setAPage((prev) => ({
           ...prev,
           filters: value,
         }));
         break;
       case '2':
-        setBPage(prev => ({
+        setBPage((prev) => ({
           ...prev,
           filters: value,
         }));
         break;
       case '3':
-        setCPage(prev => ({
+        setCPage((prev) => ({
           ...prev,
           filters: value,
         }));
@@ -247,6 +246,7 @@ const DealFlow: FC = () => {
       startDate = filterParams.date[0].format('YYYY-MM-DD');
       endDate = filterParams.date[1].format('YYYY-MM-DD');
     }
+    message.loading('数据加载中...');
     switch (activeKey) {
       case '1':
         let a: AColumnsType[] = [];
@@ -267,8 +267,11 @@ const DealFlow: FC = () => {
             platformRebateDbeans: 20,
           });
         }
-        setADataSource(a);
-        setATotal(a.length);
+        setTimeout(() => {
+          setADataSource(a);
+          setATotal(a.length);
+          message.destroy();
+        }, 1000);
         console.log(`
           请求数据
           请求页码：${aPage.page}
@@ -291,8 +294,11 @@ const DealFlow: FC = () => {
             platformRebateDbeans: 20,
           });
         }
-        setBDataSource(b);
-        setBTotal(b.length);
+        setTimeout(() => {
+          setBDataSource(b);
+          setBTotal(b.length);
+          message.destroy();
+        }, 1000);
         console.log(`
           请求数据
           请求页码：${bPage.page}
@@ -313,8 +319,12 @@ const DealFlow: FC = () => {
             events: '商家服务开通后邀新用户达到100人',
           });
         }
-        setCDataSource(c);
-        setCTotal(c.length);
+
+        setTimeout(() => {
+          setCDataSource(c);
+          setCTotal(c.length);
+          message.destroy();
+        }, 1000);
         console.log(`
           请求数据
           请求页码：${cPage.page}
@@ -432,7 +442,7 @@ const DealFlow: FC = () => {
               <Form.Item label="时间：" name="date">
                 {/* 限制只能选取当日之前的日期 */}
                 <RangePicker
-                  disabledDate={current =>
+                  disabledDate={(current) =>
                     current && current > moment().subtract(1, 'days')
                   }
                 />
@@ -493,12 +503,12 @@ const DealFlow: FC = () => {
               showTotal: (total: number, range: [number, number]) =>
                 `共 ${total} 条`,
               onChange: (page: number) =>
-                setAPage(prev => ({
+                setAPage((prev) => ({
                   ...prev,
                   page,
                 })),
               onShowSizeChange: (current: number, size: number) =>
-                setAPage(prev => ({
+                setAPage((prev) => ({
                   ...prev,
                   pageSize: size,
                   page: current,
@@ -524,12 +534,12 @@ const DealFlow: FC = () => {
               showTotal: (total: number, range: [number, number]) =>
                 `共 ${total} 条`,
               onChange: (page: number) =>
-                setBPage(prev => ({
+                setBPage((prev) => ({
                   ...prev,
                   page,
                 })),
               onShowSizeChange: (current: number, size: number) =>
-                setBPage(prev => ({
+                setBPage((prev) => ({
                   ...prev,
                   pageSize: size,
                   page: current,
@@ -555,12 +565,12 @@ const DealFlow: FC = () => {
               showTotal: (total: number, range: [number, number]) =>
                 `共 ${total} 条`,
               onChange: (page: number) =>
-                setCPage(prev => ({
+                setCPage((prev) => ({
                   ...prev,
                   page,
                 })),
               onShowSizeChange: (current: number, size: number) =>
-                setCPage(prev => ({
+                setCPage((prev) => ({
                   ...prev,
                   pageSize: size,
                   page: current,

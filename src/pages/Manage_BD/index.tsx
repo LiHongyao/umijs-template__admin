@@ -13,6 +13,7 @@ import {
   Modal,
   Descriptions,
   Form,
+  message,
 } from 'antd';
 import classNames from 'lg-classnames';
 import { useBoolean } from '@umijs/hooks';
@@ -95,22 +96,22 @@ const Manage_BD: FC = () => {
     {
       width: 180,
       title: '提交时间',
-      dataIndex: 'date'
+      dataIndex: 'date',
     },
     {
       width: 100,
       title: '姓名',
-      dataIndex: 'name'
+      dataIndex: 'name',
     },
     {
       width: 120,
       title: '手机号',
-      dataIndex: 'phone'
+      dataIndex: 'phone',
     },
     {
       width: 120,
       title: '城市/区县',
-      dataIndex: 'area'
+      dataIndex: 'area',
     },
     {
       title: '个人介绍',
@@ -149,47 +150,47 @@ const Manage_BD: FC = () => {
     {
       width: 100,
       title: '姓名',
-      dataIndex: 'name'
+      dataIndex: 'name',
     },
     {
       width: 120,
       title: '手机号',
-      dataIndex: 'phone'
+      dataIndex: 'phone',
     },
     {
       width: 120,
       title: '城市/区县',
-      dataIndex: 'area'
+      dataIndex: 'area',
     },
     {
       width: 200,
       title: '绑定微信',
-      dataIndex: 'wechat'
+      dataIndex: 'wechat',
     },
     {
       width: 100,
       title: '对接BDM',
-      dataIndex: 'bdm'
+      dataIndex: 'bdm',
     },
     {
       width: 160,
       title: '负责商家数量（家）',
-      dataIndex: 'merchantNum'
+      dataIndex: 'merchantNum',
     },
     {
       width: 100,
       title: '锁客（人）',
-      dataIndex: 'guests'
+      dataIndex: 'guests',
     },
     {
       width: 160,
       title: '完成佣金任务（次）',
-      dataIndex: 'tasks'
+      dataIndex: 'tasks',
     },
     {
       width: 100,
       title: '余额（元）',
-      dataIndex: 'balance'
+      dataIndex: 'balance',
     },
     {
       width: 80,
@@ -276,13 +277,13 @@ const Manage_BD: FC = () => {
     setFilterParams(value);
     switch (activeKey) {
       case '1':
-        setAPage(prev => ({
+        setAPage((prev) => ({
           ...prev,
           filters: value,
         }));
         break;
       case '2':
-        setBPage(prev => ({
+        setBPage((prev) => ({
           ...prev,
           filters: value,
         }));
@@ -297,6 +298,7 @@ const Manage_BD: FC = () => {
       startDate = filterParams.date[0].format('YYYY-MM-DD');
       endDate = filterParams.date[1].format('YYYY-MM-DD');
     }
+    message.loading('数据加载中...');
     switch (activeKey) {
       case '1':
         let a: AColumnsType[] = [];
@@ -312,14 +314,18 @@ const Manage_BD: FC = () => {
             note: '曾经沧海难为水，疑是银河落九天。',
           });
         }
-        setADataSource(a);
-        setATotal(a.length);
+
         console.log(`
           请求数据
           请求页码：${aPage.page}
           每页条数：${aPage.pageSize}
           过滤数据：${JSON.stringify(aPage.filters)}
         `);
+        setTimeout(() => {
+          setADataSource(a);
+          setATotal(a.length);
+          message.destroy();
+        }, 1000);
         break;
       case '2':
         let b: BColumnsType[] = [];
@@ -339,8 +345,12 @@ const Manage_BD: FC = () => {
             bdm: '周杰伦',
           });
         }
-        setBDataSource(b);
-        setBTotal(b.length);
+
+        setTimeout(() => {
+          message.destroy();
+          setBDataSource(b);
+          setBTotal(b.length);
+        }, 1000);
         console.log(`
           请求数据
           请求页码：${bPage.page}
@@ -424,7 +434,7 @@ const Manage_BD: FC = () => {
               <Form.Item label="时间：" name="date">
                 {/* 限制只能选取当日之前的日期 */}
                 <RangePicker
-                  disabledDate={current =>
+                  disabledDate={(current) =>
                     current && current > moment().subtract(1, 'days')
                   }
                 />
@@ -489,12 +499,12 @@ const Manage_BD: FC = () => {
               showTotal: (total: number, range: [number, number]) =>
                 `共 ${total} 条`,
               onChange: (page: number) =>
-                setAPage(prev => ({
+                setAPage((prev) => ({
                   ...prev,
                   page,
                 })),
               onShowSizeChange: (current: number, size: number) =>
-                setAPage(prev => ({
+                setAPage((prev) => ({
                   ...prev,
                   pageSize: size,
                   page: current,
@@ -519,12 +529,12 @@ const Manage_BD: FC = () => {
               showTotal: (total: number, range: [number, number]) =>
                 `共 ${total} 条`,
               onChange: (page: number) =>
-                setBPage(prev => ({
+                setBPage((prev) => ({
                   ...prev,
                   page,
                 })),
               onShowSizeChange: (current: number, size: number) =>
-                setBPage(prev => ({
+                setBPage((prev) => ({
                   ...prev,
                   pageSize: size,
                   page: current,
@@ -623,10 +633,10 @@ const Manage_BD: FC = () => {
           dataSource={settleDatas}
           style={{ marginTop: 12 }}
           pagination={false}
-          scroll={{y: `calc(100vh - 450px)`}}
+          scroll={{ y: `calc(100vh - 450px)` }}
           rowSelection={{
             type: 'checkbox',
-            onChange: selectedRowKeys => {
+            onChange: (selectedRowKeys) => {
               setSelectedRowKeys(selectedRowKeys);
             },
             selectedRowKeys,

@@ -9,6 +9,7 @@ import {
   Form,
   Button,
   Modal,
+  message,
 } from 'antd';
 import classNames from 'lg-classnames';
 import CityCascader from '@/components/CityCascader';
@@ -94,7 +95,7 @@ const CapitalSettlement: FC = () => {
     {
       width: 160,
       title: '结算时间',
-      dataIndex: 'date'
+      dataIndex: 'date',
     },
     {
       width: 200,
@@ -105,37 +106,37 @@ const CapitalSettlement: FC = () => {
     {
       width: 120,
       title: '商家所属区域',
-      dataIndex: 'area'
+      dataIndex: 'area',
     },
     {
       width: 100,
       title: '所属BD ',
-      dataIndex: 'bd'
+      dataIndex: 'bd',
     },
     {
       width: 100,
       title: '累计订单',
-      dataIndex: 'orderNum'
+      dataIndex: 'orderNum',
     },
     {
       width: 160,
       title: '商家累计收款（元）',
-      dataIndex: 'collection'
+      dataIndex: 'collection',
     },
     {
       width: 120,
       title: '累计返D积分',
-      dataIndex: 'dPoint'
+      dataIndex: 'dPoint',
     },
     {
       width: 120,
       title: '结算金额（元）',
-      dataIndex: 'amount'
+      dataIndex: 'amount',
     },
     {
       width: 100,
       title: '结算类型',
-      dataIndex: 'type'
+      dataIndex: 'type',
     },
     {
       width: 100,
@@ -147,7 +148,7 @@ const CapitalSettlement: FC = () => {
     {
       width: 130,
       title: '微信转账单号',
-      dataIndex: 'wechatNo'
+      dataIndex: 'wechatNo',
     },
     {
       width: 80,
@@ -168,7 +169,7 @@ const CapitalSettlement: FC = () => {
     {
       width: 160,
       title: '结算时间',
-      dataIndex: 'date'
+      dataIndex: 'date',
     },
     {
       width: 200,
@@ -179,22 +180,22 @@ const CapitalSettlement: FC = () => {
     {
       width: 120,
       title: '商家所属区域',
-      dataIndex: 'area'
+      dataIndex: 'area',
     },
     {
       width: 90,
       title: '所属BD ',
-      dataIndex: 'bd'
+      dataIndex: 'bd',
     },
     {
       width: 100,
       title: '结算D积分',
-      dataIndex: 'dPoint'
+      dataIndex: 'dPoint',
     },
     {
       width: 120,
       title: '结算金额（元）',
-      dataIndex: 'amount'
+      dataIndex: 'amount',
     },
     {
       width: 90,
@@ -205,7 +206,7 @@ const CapitalSettlement: FC = () => {
     },
     {
       title: '微信转账单号',
-      dataIndex: 'wechatNo'
+      dataIndex: 'wechatNo',
     },
   ];
   // BD业绩结算
@@ -217,15 +218,15 @@ const CapitalSettlement: FC = () => {
     },
     {
       title: '结算时间',
-      dataIndex: 'date'
+      dataIndex: 'date',
     },
     {
       title: '结算BD ',
-      dataIndex: 'bd'
+      dataIndex: 'bd',
     },
     {
       title: '结算金额（元）',
-      dataIndex: 'amount'
+      dataIndex: 'amount',
     },
     {
       title: '结算状态  ',
@@ -235,7 +236,7 @@ const CapitalSettlement: FC = () => {
     },
     {
       title: '微信转账单号',
-      dataIndex: 'wechatNo'
+      dataIndex: 'wechatNo',
     },
   ];
   // 结算列表
@@ -249,12 +250,12 @@ const CapitalSettlement: FC = () => {
     {
       width: 160,
       title: '结算时间',
-      dataIndex: 'date'
+      dataIndex: 'date',
     },
     {
       width: 120,
       title: '交易地区',
-      dataIndex: 'area'
+      dataIndex: 'area',
     },
     {
       width: 180,
@@ -270,27 +271,27 @@ const CapitalSettlement: FC = () => {
     {
       width: 160,
       title: '订单总金额（元）',
-      dataIndex: 'totalAmount'
+      dataIndex: 'totalAmount',
     },
     {
       width: 120,
       title: '抵扣D积分',
-      dataIndex: 'deductionDPoint'
+      dataIndex: 'deductionDPoint',
     },
     {
       width: 120,
       title: '支付现金（元）',
-      dataIndex: 'payAmount'
+      dataIndex: 'payAmount',
     },
     {
       width: 120,
       title: '商家返D积分',
-      dataIndex: 'merchantDPoint'
+      dataIndex: 'merchantDPoint',
     },
     {
       width: 120,
       title: '平台补贴D积分 ',
-      dataIndex: 'platformatDPoint'
+      dataIndex: 'platformatDPoint',
     },
   ];
 
@@ -343,19 +344,19 @@ const CapitalSettlement: FC = () => {
     setFilterParams(value);
     switch (activeKey) {
       case '1':
-        setAPage(prev => ({
+        setAPage((prev) => ({
           ...prev,
           filters: value,
         }));
         break;
       case '2':
-        setBPage(prev => ({
+        setBPage((prev) => ({
           ...prev,
           filters: value,
         }));
         break;
       case '3':
-        setCPage(prev => ({
+        setCPage((prev) => ({
           ...prev,
           filters: value,
         }));
@@ -397,6 +398,7 @@ const CapitalSettlement: FC = () => {
       startDate = filterParams.date[0].format('YYYY-MM-DD');
       endDate = filterParams.date[1].format('YYYY-MM-DD');
     }
+    message.loading('数据加载中...');
     switch (activeKey) {
       case '1':
         let a: AColumnsType[] = [];
@@ -418,8 +420,12 @@ const CapitalSettlement: FC = () => {
             wechatNo: '2989302032220',
           });
         }
-        setADataSource(a);
-        setATotal(a.length);
+
+        setTimeout(() => {
+          setADataSource(a);
+          setATotal(a.length);
+          message.destroy();
+        }, 1000);
         console.log(`
           请求数据
           请求页码：${aPage.page}
@@ -444,8 +450,11 @@ const CapitalSettlement: FC = () => {
             wechatNo: '2989302032220',
           });
         }
-        setBDataSource(b);
-        setBTotal(b.length);
+        setTimeout(() => {
+          setBDataSource(b);
+          setBTotal(b.length);
+          message.destroy();
+        }, 1000);
         console.log(`
           请求数据
           请求页码：${bPage.page}
@@ -454,7 +463,6 @@ const CapitalSettlement: FC = () => {
         `);
         break;
       case '3':
-        
         break;
     }
   }, [activeKey, aPage, bPage, cPage]);
@@ -562,7 +570,7 @@ const CapitalSettlement: FC = () => {
               <Form.Item label="时间：" name="date">
                 {/* 限制只能选取当日之前的日期 */}
                 <RangePicker
-                  disabledDate={current =>
+                  disabledDate={(current) =>
                     current && current > moment().subtract(1, 'days')
                   }
                 />
@@ -616,12 +624,12 @@ const CapitalSettlement: FC = () => {
               showTotal: (total: number, range: [number, number]) =>
                 `共 ${total} 条`,
               onChange: (page: number) =>
-                setAPage(prev => ({
+                setAPage((prev) => ({
                   ...prev,
                   page,
                 })),
               onShowSizeChange: (current: number, size: number) =>
-                setAPage(prev => ({
+                setAPage((prev) => ({
                   ...prev,
                   pageSize: size,
                   page: current,
@@ -647,12 +655,12 @@ const CapitalSettlement: FC = () => {
               showTotal: (total: number, range: [number, number]) =>
                 `共 ${total} 条`,
               onChange: (page: number) =>
-                setBPage(prev => ({
+                setBPage((prev) => ({
                   ...prev,
                   page,
                 })),
               onShowSizeChange: (current: number, size: number) =>
-                setBPage(prev => ({
+                setBPage((prev) => ({
                   ...prev,
                   pageSize: size,
                   page: current,
@@ -678,12 +686,12 @@ const CapitalSettlement: FC = () => {
               showTotal: (total: number, range: [number, number]) =>
                 `共 ${total} 条`,
               onChange: (page: number) =>
-                setCPage(prev => ({
+                setCPage((prev) => ({
                   ...prev,
                   page,
                 })),
               onShowSizeChange: (current: number, size: number) =>
-                setCPage(prev => ({
+                setCPage((prev) => ({
                   ...prev,
                   pageSize: size,
                   page: current,
@@ -716,12 +724,12 @@ const CapitalSettlement: FC = () => {
             showTotal: (total: number, range: [number, number]) =>
               `共 ${total} 条`,
             onChange: (page: number) =>
-              setDPage(prev => ({
+              setDPage((prev) => ({
                 ...prev,
                 page,
               })),
             onShowSizeChange: (current: number, size: number) =>
-              setDPage(prev => ({
+              setDPage((prev) => ({
                 ...prev,
                 pageSize: size,
                 page: current,

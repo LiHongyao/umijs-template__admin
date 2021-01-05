@@ -9,6 +9,7 @@ import {
   Modal,
   Space,
   Form,
+  message
 } from 'antd';
 import { useBoolean } from '@umijs/hooks';
 
@@ -80,7 +81,6 @@ const Manage_User: FC = () => {
   const [form] = Form.useForm();
   const [dataSource, setDataSource] = useState<UserType[]>([]);
   const [total, setTotal] = useState(0);
-  const [loading, setLoading] = useState(false);
   const [page, setPage] = useState<DP.TablePageDataType<FilterParamsType>>(
     () => ({
       pageSize: 20,
@@ -90,13 +90,13 @@ const Manage_User: FC = () => {
   );
   // effects
   useEffect(() => {
-    setLoading(true);
     console.log(`
       请求数据
       请求页码：${page.page}
       每页条数：${page.pageSize}
       过滤数据：${JSON.stringify(page.filters)}
     `);
+    message.loading('数据加载中...');
     const tempArr: UserType[] = [];
     for (let i = 0; i < 88; i++) {
       tempArr.push({
@@ -114,7 +114,7 @@ const Manage_User: FC = () => {
     setTimeout(() => {
       setDataSource(tempArr);
       setTotal(tempArr.length);
-      setLoading(false);
+      message.destroy();
     }, 1000);
   }, [page]);
 
@@ -198,7 +198,6 @@ const Manage_User: FC = () => {
       </div>
       {/* 表格 */}
       <Table
-        loading={loading}
         columns={columns}
         dataSource={dataSource}
         bordered
