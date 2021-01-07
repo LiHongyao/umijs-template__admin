@@ -1,7 +1,7 @@
 /*
  * @Author: Li-HONGYAO
  * @Date: 2021-01-04 16:31:33
- * @LastEditTime: 2021-01-05 16:01:07
+ * @LastEditTime: 2021-01-07 15:57:02
  * @LastEditors: Li-HONGYAO
  * @Description:
  * @FilePath: /umijs-template__admin/src/layouts/Headers/index.tsx
@@ -9,6 +9,15 @@
 
 // 天气API => ref：https://id.qweather.com/#/homepage
 // 定位API => ref：https://console.amap.com/dev/index
+/**
+ * 温馨提示：
+ * 模板使用者请注意啦，由于天气查询及定位API接口（免费版）有每日调用次数限制，所以大家可以点击上面的API链接，
+ * 注册对应平台的开发者账号并且创建应用，然后将本模板中调用API的key值替换成你创建的应用key值，感谢配合！
+ * 
+ * 替换位置：
+ * 定位API => ./src/pages/document.ejs 
+ * 天气API => 当前文件，搜索变量 “key”
+ */
 
 import React, { FC, useEffect, useState } from 'react';
 import { Layout, Menu, Dropdown, Space, message } from 'antd';
@@ -39,6 +48,7 @@ const { Header } = Layout;
 interface IProps extends ConnectProps {
   user: UserModelState;
 }
+
 
 const Headers: FC<IProps> = (props) => {
   // state
