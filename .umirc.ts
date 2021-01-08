@@ -1,7 +1,7 @@
 /*
  * @Author: Li-HONGYAO
  * @Date: 2020-11-19 17:24:26
- * @LastEditTime: 2021-01-04 15:55:17
+ * @LastEditTime: 2021-01-08 14:19:56
  * @LastEditors: Li-HONGYAO
  * @Description: 路由
  * @FilePath: /umijs-template__admin/.umirc.ts
@@ -35,6 +35,8 @@ export default defineConfig({
         { path: '/deal-flow', component: '@/pages/DealFlow' }, // 交易流水
         { path: '/manage-bd', component: '@/pages/Manage_BD' }, // BD管理
         { path: '/capital-settlement', component: '@/pages/CapitalSettlement' }, // 资金结算
+        { path: '/us/about-us', component: '@/pages/Us/AboutUs' }, // 关于我们
+        { path: '/us/teams', component: '@/pages/Us/Teams' }, // 团队介绍
         { path: '*', component: '@/pages/404' }, // 404
       ],
     },

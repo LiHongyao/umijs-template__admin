@@ -8,6 +8,7 @@ import {
   DashboardOutlined,
   StockOutlined,
   DollarOutlined,
+  AppstoreOutlined,
 } from '@ant-design/icons';
 const { Sider } = Layout;
 import './index.less';
@@ -43,6 +44,21 @@ const menus = [
     title: '交易流水',
     icon: <StockOutlined />,
   },
+  {
+    path: '/us',
+    title: '其他分类',
+    icon: <AppstoreOutlined />,
+    children: [
+      {
+        path: '/us/about-us',
+        title: '关于我们',
+      },
+      {
+        path: '/us/teams',
+        title: '团队介绍',
+      },
+    ],
+  },
 ];
 
 const Menus: FC = () => {
@@ -56,7 +72,10 @@ const Menus: FC = () => {
           alt=""
         />
         <h1 className="title">后台管理系统模板</h1>
-        <img className="cursor ani-move-to-right" src={require('../../assets/images/cursor.png')}/>
+        <img
+          className="cursor ani-move-to-right"
+          src={require('../../assets/images/cursor.png')}
+        />
       </div>
       {/* 菜单栏 */}
       <Menu
@@ -65,11 +84,21 @@ const Menus: FC = () => {
         selectedKeys={[location.pathname]}
         defaultOpenKeys={[location.pathname]}
       >
-        {menus.map((item) => (
-          <Menu.Item key={process.env.BASE + item.path} icon={item.icon}>
-            <Link to={item.path}>{item.title}</Link>
-          </Menu.Item>
-        ))}
+        {menus.map((item) =>
+          item.children ? (
+            <Menu.SubMenu key={item.path} icon={item.icon} title={item.title}>
+              {item.children.map((subItem) => (
+                <Menu.Item key={process.env.BASE + subItem.path}>
+                  <Link to={subItem.path}>{subItem.title}</Link>
+                </Menu.Item>
+              ))}
+            </Menu.SubMenu>
+          ) : (
+            <Menu.Item key={process.env.BASE + item.path} icon={item.icon}>
+              <Link to={item.path}>{item.title}</Link>
+            </Menu.Item>
+          ),
+        )}
       </Menu>
     </Sider>
   );
