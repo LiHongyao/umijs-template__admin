@@ -1,7 +1,7 @@
 /*
  * @Author: Li-HONGYAO
  * @Date: 2021-01-04 16:31:33
- * @LastEditTime: 2021-01-07 15:57:02
+ * @LastEditTime: 2021-01-08 13:28:49
  * @LastEditors: Li-HONGYAO
  * @Description:
  * @FilePath: /umijs-template__admin/src/layouts/Headers/index.tsx
@@ -20,7 +20,7 @@
  */
 
 import React, { FC, useEffect, useState } from 'react';
-import { Layout, Menu, Dropdown, Space, message } from 'antd';
+import { Layout, Menu, Dropdown, Space, message, Avatar } from 'antd';
 import {
   history,
   ConnectProps,
@@ -41,6 +41,7 @@ import {
 import moment from 'moment';
 import Tools from 'lg-tools';
 import Cookie from 'lg-cookie';
+import 'moment/locale/zh-cn';
 import './index.less';
 
 const { Header } = Layout;
@@ -154,7 +155,7 @@ const Headers: FC<IProps> = (props) => {
       {/* 右侧内容 */}
       <Space size="large">
         {/* 日期 */}
-        <span>{moment().locale('zh').format('YYYY年MM月DD日 星期e')}</span>
+        <span>{moment().format('YYYY年MM月DD日 dddd')}</span>
         {/* 定位信息 & 天气 */}
         <Space>
           <>
@@ -195,11 +196,8 @@ const Headers: FC<IProps> = (props) => {
             onClick={(e) => e.preventDefault()}
             className="cursor-pointer flex-center"
           >
-            <img
-              src="https://img.meituan.net/csc/684988f82620882034067237186480e91348.png"
-              className="icon-16x16"
-            />
-            <span className="mx-10">{props.user.username || '管理员'}</span>
+            <Avatar size="small" style={{background: '#00a2ae'}}>U</Avatar>
+            <span className="mx-8">{props.user.username || '管理员'}</span>
             <DownOutlined />
           </div>
         </Dropdown>
