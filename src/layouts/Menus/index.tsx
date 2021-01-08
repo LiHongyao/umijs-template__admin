@@ -56,6 +56,7 @@ const Menus: FC = () => {
           alt=""
         />
         <h1 className="title">后台管理系统模板</h1>
+        <img className="cursor ani-move-to-right" src={require('../../assets/images/cursor.png')}/>
       </div>
       {/* 菜单栏 */}
       <Menu

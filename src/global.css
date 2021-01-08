@@ -3,6 +3,15 @@
 	src: url('./public/fonts/四通立方行楷.ttf')
 }
 
+@keyframes ani-move-to-right  {
+	0%, 50% { left: -100%; }
+	100% { left: 100%; }
+}
+
+/* 高光动画 */
+.ani-move-to-right {
+	animation: ani-move-to-right 2.5s ease-in-out infinite;
+}
 
 
 html, body, #root {
