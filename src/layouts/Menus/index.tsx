@@ -13,7 +13,14 @@ import {
 const { Sider } = Layout;
 import './index.less';
 
-const menus = [
+type MenuItemType = {
+  path: string;
+  title: string;
+  icon?: JSX.Element;
+  children?: MenuItemType[]
+}
+
+const menus: MenuItemType[] = [
   {
     path: '/index',
     title: '仪表概览',
