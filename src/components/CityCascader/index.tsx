@@ -1,3 +1,11 @@
+/*
+ * @Author: Li-HONGYAO
+ * @Date: 2020-12-19 13:46:50
+ * @LastEditTime: 2021-01-20 00:17:52
+ * @LastEditors: Li-HONGYAO
+ * @Description:
+ * @FilePath: /umijs-template__admin/src/components/CityCascader/index.tsx
+ */
 import React, { FC, memo, useEffect, useState } from 'react';
 import { CascaderOptionType, CascaderValueType } from 'antd/es/cascader';
 import { Cascader } from 'antd';
@@ -5,19 +13,17 @@ import { Cascader } from 'antd';
 type OptionsType = {
   value: string;
   label: string;
-  isLeaf: boolean
-}
+  isLeaf: boolean;
+};
 
 interface IProps {
+  value?: any;
   onChange?: (value: CascaderValueType) => void;
 }
 
 const CityCascader: FC<IProps> = (props) => {
   const [options, setOptions] = useState<OptionsType[]>([]);
   // events
-  const onCascaderChange = (value: CascaderValueType) => {
-    props.onChange && props.onChange(value);
-  };
   const onLoadData = (selectedOptions?: CascaderOptionType[]) => {
     if (selectedOptions) {
       const targetOption = selectedOptions[selectedOptions.length - 1];
@@ -55,7 +61,7 @@ const CityCascader: FC<IProps> = (props) => {
         value: '乐山市',
         label: '乐山市',
         isLeaf: false,
-      }
+      },
     ]);
   }, []);
 
@@ -64,7 +70,8 @@ const CityCascader: FC<IProps> = (props) => {
     <Cascader
       options={options}
       loadData={onLoadData}
-      onChange={onCascaderChange}
+      onChange={props.onChange}
+      defaultValue={props.value}
       changeOnSelect
     />
   );
