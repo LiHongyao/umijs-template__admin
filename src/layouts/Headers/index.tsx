@@ -1,7 +1,7 @@
 /*
  * @Author: Li-HONGYAO
  * @Date: 2021-01-04 16:31:33
- * @LastEditTime: 2021-01-08 13:28:49
+ * @LastEditTime: 2021-01-20 00:05:00
  * @LastEditors: Li-HONGYAO
  * @Description:
  * @FilePath: /umijs-template__admin/src/layouts/Headers/index.tsx
@@ -13,9 +13,9 @@
  * 温馨提示：
  * 模板使用者请注意啦，由于天气查询及定位API接口（免费版）有每日调用次数限制，所以大家可以点击上面的API链接，
  * 注册对应平台的开发者账号并且创建应用，然后将本模板中调用API的key值替换成你创建的应用key值，感谢配合！
- * 
+ *
  * 替换位置：
- * 定位API => ./src/pages/document.ejs 
+ * 定位API => ./src/pages/document.ejs
  * 天气API => 当前文件，搜索变量 “key”
  */
 
@@ -36,6 +36,8 @@ import {
   LoginOutlined,
   LockOutlined,
   EnvironmentFilled,
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
 } from '@ant-design/icons';
 
 import moment from 'moment';
@@ -46,10 +48,12 @@ import './index.less';
 
 const { Header } = Layout;
 
+// interface IProps extends ConnectProps
 interface IProps extends ConnectProps {
   user: UserModelState;
+  visible: boolean;
+  onTrigger: () => void;
 }
-
 
 const Headers: FC<IProps> = (props) => {
   // state
@@ -60,7 +64,7 @@ const Headers: FC<IProps> = (props) => {
     tempMin: 0,
     tempMax: 0,
     text: '',
-    icon: ''
+    icon: '',
   });
   // events
   const onChangePSW = () => {
@@ -85,7 +89,7 @@ const Headers: FC<IProps> = (props) => {
       '海纳百川，有容乃大；壁立千仞，无欲则刚。——林则徐',
       '其身正，不令而行；其身不正，虽令不从。——《论语》',
       '穷则独善其身，达则兼善天下。——《孟子》',
-      '勿以恶小而为之，勿以善小而不为。——刘备'
+      '勿以恶小而为之，勿以善小而不为。——刘备',
     ];
     const index = Tools.randomInteger(0, list.length);
     setTips(list[index]);
@@ -137,7 +141,7 @@ const Headers: FC<IProps> = (props) => {
               tempMin: res.daily[0].tempMin,
               tempMax: res.daily[0].tempMax,
               text: res.daily[0].textDay,
-              icon: res.daily[0].iconDay
+              icon: res.daily[0].iconDay,
             });
           }
         });
@@ -151,7 +155,18 @@ const Headers: FC<IProps> = (props) => {
   return (
     <Header className="site-layout-header">
       {/* 左侧提示信息 */}
-      <div>{tips}</div>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        {/* 切换按钮 */}
+        {React.createElement(
+          props.visible ? MenuUnfoldOutlined : MenuFoldOutlined,
+          {
+            className: 'trigger',
+            onClick: props.onTrigger,
+          },
+        )}
+        {/* 提示语 */}
+        <span style={{ marginLeft: 20 }}>{tips}</span>
+      </div>
       {/* 右侧内容 */}
       <Space size="large">
         {/* 日期 */}
@@ -164,7 +179,10 @@ const Headers: FC<IProps> = (props) => {
           </>
           <span>{weather.text}</span>
           {weather.icon && (
-            <img src={require(`../../assets/images/qweather/${weather.icon}.png`)} className="icon-38x38"/>
+            <img
+              src={require(`../../assets/images/qweather/${weather.icon}.png`)}
+              className="icon-38x38"
+            />
           )}
           <span>
             {weather.tempMin}℃ ~ {weather.tempMax}℃
@@ -196,11 +214,15 @@ const Headers: FC<IProps> = (props) => {
             onClick={(e) => e.preventDefault()}
             className="cursor-pointer flex-center"
           >
-            <Avatar size="small" style={{background: '#00a2ae'}}>U</Avatar>
+            <Avatar
+              size="small"
+              src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201512%2F14%2F20151214104025_NytJX.jpeg&refer=http%3A%2F%2Fb-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1613663521&t=11264a979a0e50939673cfa0f678fe47"
+            />
             <span className="mx-8">{props.user.username || '管理员'}</span>
             <DownOutlined />
           </div>
         </Dropdown>
+        {/* 全屏按钮 */}
         {isFull ? (
           <FullscreenExitOutlined
             onClick={() => Tools.exitFullscreen()}

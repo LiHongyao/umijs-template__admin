@@ -1,13 +1,17 @@
 .layout-logo {
-  background: linear-gradient(45deg, #000, rgba(255, 255, 255, 0.3));
-  margin: 16px 8px;
-  padding: 8px 0;
-  text-align: center;
-  line-height: 32px;
-  letter-spacing: 1px;
-  border-radius: 4px;
-  position: relative;
-  overflow: hidden;
+  height: 64px;
+  padding: 8px 16px;
+  &__wrapper {
+    height: 100%;
+    background: linear-gradient(45deg, #000, rgba(255, 255, 255, 0.3));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    letter-spacing: 1px;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+  }
 
   .logo {
     width: 24px;
@@ -16,7 +20,7 @@
     color: #ffffff;
     margin-bottom: 0;
     font-family: 'f-sf';
-    text-shadow: #458edb 1px 1px 4px ;
+    text-shadow: #458edb 1px 1px 4px;
   }
   .cursor {
     width: 100%;

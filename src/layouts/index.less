@@ -2,9 +2,6 @@
   height: 100%;
 }
 
-
-
-
 // 内容
 .site-layout-content {
   display: flex;
@@ -21,7 +18,7 @@
   align-items: center;
 }
 .ant-tabs.ant-tabs-top > .ant-tabs-nav {
-  margin: 0 ;
+  margin: 0;
 }
 .ant-tabs-nav-wrap {
   padding: 0 16px;
@@ -37,9 +34,10 @@
   color: #868686;
 }
 .site-top-bar__label {
-  color: #C5C5C5;
+  color: #c5c5c5;
 }
 .site-top-bar__value {
+  font-weight: bold;
   color: #333333;
 }
 .site-top-bar__menu {
@@ -74,16 +72,21 @@
 
 // 过滤兰样式
 .site-filter-bar {
-  padding: 0 16px;
-  height: 60px;
-
+  padding: 0 16px 8px 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
 
-
-
+  .ant-form {
+    display: flex;
+    flex-wrap: wrap;
+    .ant-form-item {
+      margin-top: 8px;
+      margin-right: 16px;
+    }
+  }
 }
+
 .ant-form-item {
   margin-bottom: 0 !important;
 }
@@ -95,13 +98,7 @@
   }
 }
 
-
 // 表格头部样式
 .ant-table .ant-table-thead th.ant-table-cell {
   color: #888888;
 }
-
-
-
-
-

@@ -271,35 +271,29 @@ const Manage_Merchants: FC = () => {
             }))
           }
         >
-          <Space size="large">
-            {/* 城市区域 */}
-            <Form.Item label="城市区域：" name="city">
-              <CityCascader />
-            </Form.Item>
-            {/* 类型 */}
-            <Form.Item label="类型：" name="type">
-              <Cascader
-                options={options}
-                loadData={onLoadData}
-                changeOnSelect
-              />
-            </Form.Item>
-            {/* 搜索 */}
-            <Form.Item label="搜索：" name="searchKey">
-              <Input
-                placeholder="商家名称/商家手机号"
-                style={{ width: 180 }}
-                allowClear
-                size="middle"
-              />
-            </Form.Item>
-            {/* 提交 */}
-            <Form.Item>
-              <Button htmlType="submit" type="primary">
-                搜索
-              </Button>
-            </Form.Item>
-          </Space>
+          {/* 城市区域 */}
+          <Form.Item label="城市区域：" name="city">
+            <CityCascader />
+          </Form.Item>
+          {/* 类型 */}
+          <Form.Item label="类型：" name="type">
+            <Cascader options={options} loadData={onLoadData} changeOnSelect />
+          </Form.Item>
+          {/* 搜索 */}
+          <Form.Item label="搜索：" name="searchKey">
+            <Input
+              placeholder="商家名称/商家手机号"
+              style={{ width: 180 }}
+              allowClear
+              size="middle"
+            />
+          </Form.Item>
+          {/* 提交 */}
+          <Form.Item>
+            <Button htmlType="submit" type="primary">
+              搜索
+            </Button>
+          </Form.Item>
         </Form>
       </div>
       {/* 表格 */}
