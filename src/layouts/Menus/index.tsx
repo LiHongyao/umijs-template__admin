@@ -1,7 +1,7 @@
 /*
  * @Author: Li-HONGYAO
  * @Date: 2021-01-04 15:41:47
- * @LastEditTime: 2021-01-20 00:12:14
+ * @LastEditTime: 2021-01-21 10:49:02
  * @LastEditors: Li-HONGYAO
  * @Description:
  * @FilePath: /umijs-template__admin/src/layouts/Menus/index.tsx
@@ -10,12 +10,9 @@ import React, { FC } from 'react';
 import { Menu, Layout } from 'antd';
 import { Link } from 'umi';
 import {
-  UserOutlined,
   TransactionOutlined,
   BlockOutlined,
-  DashboardOutlined,
-  StockOutlined,
-  DollarOutlined,
+  BarChartOutlined,
   AppstoreOutlined,
 } from '@ant-design/icons';
 import './index.less';
@@ -34,8 +31,8 @@ const { Sider } = Layout;
 const menus: MenuItemType[] = [
   {
     path: '/index',
-    title: '仪表概览',
-    icon: <DashboardOutlined />,
+    title: '数据统计',
+    icon: <BarChartOutlined />,
   },
   {
     path: '/manage-merchants',
@@ -43,24 +40,9 @@ const menus: MenuItemType[] = [
     icon: <TransactionOutlined />,
   },
   {
-    path: '/manage-user',
-    title: '用户管理',
-    icon: <UserOutlined />,
-  },
-  {
     path: '/manage-bd',
     title: '商务管理',
     icon: <BlockOutlined />,
-  },
-  {
-    path: '/capital-settlement',
-    title: '资金结算',
-    icon: <DollarOutlined />,
-  },
-  {
-    path: '/deal-flow',
-    title: '交易流水',
-    icon: <StockOutlined />,
   },
   {
     path: '/us',

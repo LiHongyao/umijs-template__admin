@@ -10,19 +10,17 @@ import {
   Select,
   Button,
   Space,
-  Modal,
-  Descriptions,
   Form,
   message,
+  Modal,
 } from 'antd';
 import classNames from 'lg-classnames';
-import { useBoolean } from '@umijs/hooks';
 import CityCascader from '@/components/CityCascader';
 
 const { TabPane } = Tabs;
 const { RangePicker } = DatePicker;
-const { TextArea } = Input;
 const { Option } = Select;
+const { TextArea } = Input;
 
 // 过滤数据类型
 type FilterParamsType = {
@@ -32,84 +30,44 @@ type FilterParamsType = {
   bdmUid?: string;
 };
 
-// 最新申请
-type AColumnsType = {
+// 列数据类型
+type ColumnsType = {
   key: string;
-  date: string /** 提交时间    */;
+  subTime: string /** 提交时间 */;
+  checkTime: string /** 认证时间 */;
   name: string /** 姓名 */;
   phone: string /** 手机号 */;
   area: string /** 城市/区县 */;
   introduction: string /** 个人介绍 */;
-  note: string /** 备注 */;
-};
-
-// 已认证BD
-type BColumnsType = {
-  key: string;
-  date: string /** 认证时间 */;
-  name: string /** 姓名 */;
-  phone: string /** 手机号 */;
-  area: string /** 城市/区县 */;
   wechat: string /** 绑定微信 */;
   bdm: string /** 对接BDM  */;
   merchantNum: number /**  负责商家数量（家） */;
   guests: number /** 锁客（人） */;
   tasks: number /** 完成佣金任务（次） */;
   balance: number /** 余额（元） */;
-  note: string /** 备注 */;
 };
-
-const settleDatas = [
-  { merchantName: '佳佳便利店', amount: 100, key: 0 },
-  { merchantName: '红旗超市', amount: 100, key: 1 },
-  { merchantName: '永辉超市', amount: 100, key: 2 },
-  { merchantName: '百分百超市', amount: 100, key: 3 },
-  { merchantName: '司南超市', amount: 100, key: 4 },
-  { merchantName: '司南超市', amount: 100, key: 5 },
-  { merchantName: '司南超市', amount: 100, key: 6 },
-  { merchantName: '司南超市', amount: 100, key: 7 },
-  { merchantName: '司南超市', amount: 100, key: 8 },
-  { merchantName: '司南超市', amount: 100, key: 9 },
-];
 
 const Manage_BD: FC = () => {
   // columns data
-  const settlementColumns: ColumnProps<any>[] = [
-    {
-      title: '店铺名称',
-      dataIndex: 'merchantName',
-      key: 'merchantName',
-    },
-    {
-      title: '结算金额',
-      dataIndex: 'amount',
-      key: 'amount',
-    },
-  ];
-  const aColumns: ColumnProps<AColumnsType>[] = [
+  const aColumns: ColumnProps<ColumnsType>[] = [
     {
       width: 60,
       title: '序号',
-      render: (text: AColumnsType, record: AColumnsType, index) =>
-        `${index + 1}`,
+      render: (text: ColumnsType, record: ColumnsType, index) => `${index + 1}`,
     },
     {
-      width: 180,
       title: '提交时间',
-      dataIndex: 'date',
+      dataIndex: 'subTime',
     },
     {
-      width: 100,
       title: '姓名',
       dataIndex: 'name',
     },
     {
-      width: 120,
       title: '手机号',
       dataIndex: 'phone',
     },
     {
-      width: 120,
       title: '城市/区县',
       dataIndex: 'area',
     },
@@ -122,109 +80,52 @@ const Manage_BD: FC = () => {
         </Tooltip>
       ),
     },
-    {
-      width: 60,
-      title: '备注',
-      dataIndex: 'note',
-      render: (record: string) => {
-        return record.length > 0 ? (
-          <a onClick={showRemark}>有</a>
-        ) : (
-          <span>无</span>
-        );
-      },
-    },
   ];
-  const bColumns: ColumnProps<BColumnsType>[] = [
+  const bColumns: ColumnProps<ColumnsType>[] = [
     {
       width: 60,
       title: '序号',
-      render: (text: BColumnsType, record: BColumnsType, index) =>
-        `${index + 1}`,
+      render: (text: ColumnsType, record: ColumnsType, index) => `${index + 1}`,
     },
     {
-      width: 180,
       title: '认证时间',
-      dataIndex: 'date',
+      dataIndex: 'checkTime',
     },
     {
-      width: 100,
       title: '姓名',
       dataIndex: 'name',
     },
     {
-      width: 120,
       title: '手机号',
       dataIndex: 'phone',
     },
     {
-      width: 120,
       title: '城市/区县',
       dataIndex: 'area',
     },
     {
-      width: 200,
       title: '绑定微信',
       dataIndex: 'wechat',
     },
     {
-      width: 100,
       title: '对接BDM',
       dataIndex: 'bdm',
     },
     {
-      width: 160,
       title: '负责商家数量（家）',
       dataIndex: 'merchantNum',
     },
     {
-      width: 100,
       title: '锁客（人）',
       dataIndex: 'guests',
     },
     {
-      width: 160,
       title: '完成佣金任务（次）',
       dataIndex: 'tasks',
     },
     {
-      width: 100,
       title: '余额（元）',
       dataIndex: 'balance',
-    },
-    {
-      width: 80,
-      title: '备注',
-      dataIndex: 'note',
-      render: (record: string) => {
-        return record.length > 0 ? (
-          <a onClick={showRemark}>有</a>
-        ) : (
-          <span>无</span>
-        );
-      },
-    },
-    {
-      width: 160,
-      title: '操作',
-      align: 'center',
-      key: 'operation',
-      fixed: 'right',
-      render: () => (
-        <Space size="small">
-          <Button
-            type="text"
-            size="small"
-            style={{ color: '#458edb' }}
-            onClick={showBdDetails}
-          >
-            详情/编辑
-          </Button>
-          <Button type="text" size="small" danger onClick={showSettlement}>
-            结算
-          </Button>
-        </Space>
-      ),
     },
   ];
 
@@ -233,10 +134,13 @@ const Manage_BD: FC = () => {
   const [form] = Form.useForm();
   const [activeKey, setActiveKey] = useState('1');
   const [filterParams, setFilterParams] = useState<FilterParamsType>({});
-  const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
 
-  const [aDataSource, setADataSource] = useState<AColumnsType[]>([]);
-  const [bDataSource, setBDataSource] = useState<BColumnsType[]>([]);
+  const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
+  const [rejectReason, setRejectReason] = useState('');
+  const [rejectModalVisible, setRejectModalVisible] = useState(false);
+
+  const [aDataSource, setADataSource] = useState<ColumnsType[]>([]);
+  const [bDataSource, setBDataSource] = useState<ColumnsType[]>([]);
 
   const [aTotal, setATotal] = useState(0);
   const [bTotal, setBTotal] = useState(0);
@@ -256,22 +160,6 @@ const Manage_BD: FC = () => {
     }),
   );
 
-  const {
-    state: bdDetailsVisible,
-    setTrue: showBdDetails,
-    setFalse: hideBdDetails,
-  } = useBoolean();
-  const {
-    state: settlementVisible,
-    setTrue: showSettlement,
-    setFalse: hideSettlement,
-  } = useBoolean();
-  const {
-    state: remarkVisible,
-    setTrue: showRemark,
-    setFalse: hideRemark,
-  } = useBoolean();
-
   // events
   const onFormFinish = (value: FilterParamsType) => {
     setFilterParams(value);
@@ -290,6 +178,26 @@ const Manage_BD: FC = () => {
         break;
     }
   };
+  // 审核
+  const callAudit = (status: number) => {
+    message.success('操作成功！');
+    setSelectedRowKeys([]);
+    setRejectReason('');
+    setRejectModalVisible(false);
+  };
+  const onAudit = (status: number) => {
+    if (selectedRowKeys.length === 0) {
+      message.info(
+        `请选择需要 ${status ? '「通过审核」' : '「驳回审核」'} 的条目！`,
+      );
+      return;
+    }
+    if (status === 1) {
+      callAudit(1);
+    } else {
+      setRejectModalVisible(true);
+    }
+  };
   // effects
   useEffect(() => {
     let startDate: string | undefined;
@@ -297,22 +205,21 @@ const Manage_BD: FC = () => {
     if (filterParams.date) {
       startDate = filterParams.date[0].format('YYYY-MM-DD');
       endDate = filterParams.date[1].format('YYYY-MM-DD');
+      console.log(startDate, endDate);
     }
     message.loading('数据加载中...');
     switch (activeKey) {
       case '1':
-        let a: AColumnsType[] = [];
+        let a: ColumnsType[] = [];
         for (let i = 0; i < 66; i++) {
           a.push({
             key: `a___${i}`,
-            date: '2020/11/11 23:11:11 ',
+            subTime: '2020/11/11 23:11:11 ',
             name: '李鸿耀',
             phone: '17398888669',
             area: '成都武侯区',
-            introduction:
-              '天将降大任于斯人也，必先苦其心志，劳其筋骨，饿其体肤，空乏其身，行拂乱其所为。所以动心忍性，增益其所不能。',
-            note: '曾经沧海难为水，疑是银河落九天。',
-          });
+            introduction: '前端技术专家',
+          } as ColumnsType);
         }
 
         console.log(`
@@ -328,11 +235,11 @@ const Manage_BD: FC = () => {
         }, 1000);
         break;
       case '2':
-        let b: BColumnsType[] = [];
+        let b: ColumnsType[] = [];
         for (let i = 0; i < 88; i++) {
           b.push({
             key: `b___${i}`,
-            date: '2020/11/11 23:11:11 ',
+            checkTime: '2020/11/11 23:11:11 ',
             name: '李鸿耀',
             phone: '17398888669',
             area: '成都武侯区',
@@ -340,10 +247,9 @@ const Manage_BD: FC = () => {
             guests: 99999,
             tasks: 1000,
             balance: 300,
-            note: '曾经沧海难为水，疑是银河落九天。',
             wechat: 'Li_HONGYAO',
             bdm: '周杰伦',
-          });
+          } as ColumnsType);
         }
 
         setTimeout(() => {
@@ -429,45 +335,43 @@ const Manage_BD: FC = () => {
             initialValues={filterParams}
             autoComplete="off"
           >
-            <Space size="large">
-              {/* 锁定BD */}
-              <Form.Item label="时间：" name="date">
-                {/* 限制只能选取当日之前的日期 */}
-                <RangePicker
-                  disabledDate={(current) =>
-                    current && current > moment().subtract(1, 'days')
-                  }
-                />
+            {/* 锁定BD */}
+            <Form.Item label="时间：" name="date">
+              {/* 限制只能选取当日之前的日期 */}
+              <RangePicker
+                disabledDate={(current) =>
+                  current && current > moment().subtract(1, 'days')
+                }
+              />
+            </Form.Item>
+            {/* 城市区域 */}
+            <Form.Item label="城市区域：" name="city">
+              <CityCascader />
+            </Form.Item>
+            {/* BDM */}
+            {activeKey === '2' && (
+              <Form.Item label="BD：" name="bdmUid">
+                <Select placeholder="请选择" allowClear>
+                  <Option value="李鸿耀">李鸿耀</Option>
+                  <Option value="王理">王理</Option>
+                </Select>
               </Form.Item>
-              {/* 城市区域 */}
-              <Form.Item label="城市区域：" name="city">
-                <CityCascader />
-              </Form.Item>
-              {/* BDM */}
-              {activeKey === '2' && (
-                <Form.Item label="BD：" name="bdmUid">
-                  <Select placeholder="请选择" allowClear>
-                    <Option value="李鸿耀">李鸿耀</Option>
-                    <Option value="王理">王理</Option>
-                  </Select>
-                </Form.Item>
-              )}
-              {/* 搜索 */}
-              <Form.Item label="搜索：" name="searchKey">
-                <Input
-                  placeholder="商家名称/商家手机号"
-                  style={{ width: 180 }}
-                  allowClear
-                  size="middle"
-                />
-              </Form.Item>
-              {/* 提交 */}
-              <Form.Item>
-                <Button htmlType="submit" type="primary" size="middle">
-                  搜索
-                </Button>
-              </Form.Item>
-            </Space>
+            )}
+            {/* 搜索 */}
+            <Form.Item label="搜索：" name="searchKey">
+              <Input
+                placeholder="商家名称/商家手机号"
+                style={{ width: 180 }}
+                allowClear
+                size="middle"
+              />
+            </Form.Item>
+            {/* 提交 */}
+            <Form.Item>
+              <Button htmlType="submit" type="primary" size="middle">
+                搜索
+              </Button>
+            </Form.Item>
           </Form>
         </div>
       </>
@@ -482,13 +386,20 @@ const Manage_BD: FC = () => {
         defaultValue="apply"
         renderTabBar={renderTabBar}
       >
-        <TabPane tab="最新申请" key="1">
+        <TabPane tab="待审核BD" key="1">
           <Table
             columns={aColumns}
             dataSource={aDataSource}
             bordered
             size="small"
-            scroll={{ y: 'calc(100vh - 280px)' }}
+            scroll={{ y: 'calc(100vh - 320px)' }}
+            rowKey="key"
+            rowSelection={{
+              type: 'checkbox',
+              onChange: (selectedRowKeys) =>
+                setSelectedRowKeys(selectedRowKeys),
+              selectedRowKeys,
+            }}
             pagination={{
               current: aPage.page /** 当前页数 */,
               hideOnSinglePage: false /** 只有一页时是否隐藏分页器 */,
@@ -510,6 +421,24 @@ const Manage_BD: FC = () => {
                   page: current,
                 })),
             }}
+            footer={() => (
+              <Space>
+                <span style={{ marginLeft: 8 }}>
+                  当前选中 {selectedRowKeys.length} 家店铺
+                </span>
+                <Button size="small" type="primary" onClick={() => onAudit(1)}>
+                  审核通过
+                </Button>
+                <Button
+                  size="small"
+                  danger
+                  type="primary"
+                  onClick={() => onAudit(0)}
+                >
+                  审核驳回
+                </Button>
+              </Space>
+            )}
           />
         </TabPane>
         <TabPane tab="已认证BD" key="2">
@@ -543,133 +472,33 @@ const Manage_BD: FC = () => {
           />
         </TabPane>
       </Tabs>
-      {/* 弹框 */}
-      {/* BD详情 */}
+
+      {/* 驳回/发放失败理由 */}
       <Modal
-        title="BD详情"
-        visible={bdDetailsVisible}
-        width={1000}
+        title="驳回理由"
+        visible={rejectModalVisible}
         onOk={() => {
-          hideBdDetails();
+          if (rejectReason) {
+            callAudit(0);
+          } else {
+            message.info('请填写驳回原因！');
+          }
         }}
-        onCancel={hideBdDetails}
-        okText="保存"
-      >
-        <Descriptions
-          size="small"
-          bordered
-          column={3}
-          className="descriptions-wrapper"
-        >
-          <Descriptions.Item label="姓名">王老九</Descriptions.Item>
-          <Descriptions.Item label="认证时间">
-            2020/11/11 09:11:21
-          </Descriptions.Item>
-          <Descriptions.Item label="城市区县">成都 武侯区</Descriptions.Item>
-          <Descriptions.Item label="手机号">17398888669</Descriptions.Item>
-          <Descriptions.Item label="绑定微信">Li_HONGYAO</Descriptions.Item>
-          <Descriptions.Item label="对接BDM">唐大军</Descriptions.Item>
-          <Descriptions.Item label="锁客人数（人）">32323</Descriptions.Item>
-          <Descriptions.Item label="余额（元）">232322.00</Descriptions.Item>
-          <Descriptions.Item label="已结算">2323323.00</Descriptions.Item>
-          <Descriptions.Item label="负责商家数量（家）">7</Descriptions.Item>
-          <Descriptions.Item label="完成佣金任务（次）">5</Descriptions.Item>
-        </Descriptions>
-        <Descriptions
-          size="small"
-          bordered
-          style={{ marginTop: 12 }}
-          className="descriptions-wrapper"
-        >
-          <Descriptions.Item label="BDM" span={3}>
-            <Select style={{ width: 300 }} defaultValue="刘以达 17398888669">
-              <Option key="bdm_1" value="刘以达 17398888669">
-                刘以达 17398888669
-              </Option>
-              <Option key="bdm_2" value="李达康 17398888669">
-                李达康 17398888669
-              </Option>
-            </Select>
-          </Descriptions.Item>
-        </Descriptions>
-        <div className="my-12">备注</div>
-        <TextArea allowClear placeholder="请输入备注信息" />
-      </Modal>
-      {/* 结算 */}
-      <Modal
-        title="结算"
-        visible={settlementVisible}
-        width={500}
-        onOk={() => {
-          hideSettlement();
+        onCancel={() => {
+          setRejectReason('');
+          setRejectModalVisible(false);
         }}
-        onCancel={hideSettlement}
-        okText="提交结算"
-      >
-        <Descriptions size="small" column={2} className="descriptions-wrapper">
-          <Descriptions.Item key="se1" label="BD">
-            王老九 19384929022
-          </Descriptions.Item>
-          <Descriptions.Item key="se2" label="收款微信ID">
-            阿拉斯加小的
-          </Descriptions.Item>
-        </Descriptions>
-        <div style={{ marginBottom: 16, marginTop: 16 }}>
-          <Button
-            type="primary"
-            size="small"
-            disabled={selectedRowKeys.length === 0}
-            onClick={() => setSelectedRowKeys([])}
-          >
-            重新选择
-          </Button>
-          <span style={{ marginLeft: 8 }}>
-            当前选中 {selectedRowKeys.length} 家店铺
-          </span>
-        </div>
-        <Table
-          size="small"
-          columns={settlementColumns}
-          dataSource={settleDatas}
-          style={{ marginTop: 12 }}
-          pagination={false}
-          scroll={{ y: `calc(100vh - 450px)` }}
-          rowSelection={{
-            type: 'checkbox',
-            onChange: (selectedRowKeys) => {
-              setSelectedRowKeys(selectedRowKeys);
-            },
-            selectedRowKeys,
-          }}
-          // summary={() => {
-          //   return (
-          //     <Table.Summary.Row>
-          //       <Table.Summary.Cell index={0}>结算：</Table.Summary.Cell>
-          //       <Table.Summary.Cell index={1}>
-          //         <span className="f18 f-bold">200元</span>
-          //       </Table.Summary.Cell>
-          //     </Table.Summary.Row>
-          //   );
-          // }}
-        />
-        <div className="mt-12">
-          <span>结算：</span>
-          <span className="f18 f-bold">200元</span>
-        </div>
-      </Modal>
-      {/* 备注 */}
-      <Modal
-        title="备注"
-        visible={remarkVisible}
-        onOk={hideRemark}
-        onCancel={hideRemark}
-        okText="保存"
+        okText="确认驳回"
       >
         <TextArea
-          placeholder="请输入备注信息，不多于500字"
-          maxLength={500}
-          rows={5}
-        ></TextArea>
+          placeholder="请输入驳回理由，不多于100个字符"
+          maxLength={100}
+          rows={2}
+          value={rejectReason}
+          onChange={({ target: { value } }) => {
+            setRejectReason(value);
+          }}
+        />
       </Modal>
     </div>
   );

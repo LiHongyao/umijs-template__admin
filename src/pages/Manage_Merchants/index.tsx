@@ -8,13 +8,12 @@ import {
   Button,
   InputNumber,
   Form,
-  Cascader,
   message,
 } from 'antd';
 import { ColumnProps } from 'antd/es/table';
-import { CascaderOptionType } from 'antd/es/cascader';
 import CityCascader from '@/components/CityCascader';
 
+// 筛选条件
 type FilterParamsType = {
   city?: string;
   bdUid?: string;
@@ -41,23 +40,14 @@ type ColumnsType = {
   maximumDeductible: number /** 最高可抵扣 */;
 };
 
-// 选择项数据类型
-type OptionsType = {
-  value: string;
-  label: string;
-  isLeaf: boolean;
-};
-
 const Manage_Merchants: FC = () => {
   // state
-  const [
-    merchantDetailsModalVisible,
-    setMerchantDetailsModalVisible,
-  ] = useState(false);
-  const [options, setOptions] = useState<OptionsType[]>([]);
-  const [settlementModalVisible, setSettlementModalVisible] = useState(false);
+  const [detailsVisible, setDetailsVisible] = useState(false);
+  const [settleVisible, setSettleVisible] = useState(false);
   const [disabled, setDisabled] = useState(true);
+
   const [form] = Form.useForm();
+
   const [dataSource, setDataSource] = useState<ColumnsType[]>([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState<DP.TablePageDataType<FilterParamsType>>(
@@ -68,47 +58,7 @@ const Manage_Merchants: FC = () => {
     }),
   );
 
-  // events
-  // 加载列表数据
-  const onLoadData = (selectedOptions?: CascaderOptionType[]) => {
-    if (selectedOptions) {
-      const targetOption = selectedOptions[selectedOptions.length - 1];
-      targetOption.loading = true;
-      setTimeout(() => {
-        targetOption.loading = false;
-        targetOption.children = [
-          {
-            label: '二级类型A',
-            value: '二级类型A',
-          },
-          {
-            label: `二级类型B`,
-            value: '二级类型B',
-          },
-          {
-            label: `二级类型C`,
-            value: '二级类型C',
-          },
-        ];
-        setOptions([...options]);
-      }, 1000);
-    }
-  };
   // effects
-  useEffect(() => {
-    setOptions([
-      {
-        value: '一级类型A',
-        label: '一级类型A',
-        isLeaf: false,
-      },
-      {
-        value: '一级类型B',
-        label: '一级类型B',
-        isLeaf: false,
-      },
-    ]);
-  }, []);
   useEffect(() => {
     console.log(`
     请求数据
@@ -145,62 +95,17 @@ const Manage_Merchants: FC = () => {
   }, [page]);
   // 数据源
   const columns: ColumnProps<ColumnsType>[] = [
-    {
-      width: 100,
-      title: '商家ID',
-      dataIndex: 'id',
-      fixed: 'left',
-    },
-    {
-      width: 120,
-      title: '城市区域',
-      dataIndex: 'from',
-    },
-    {
-      width: 100,
-      title: '商家类型',
-      dataIndex: 'merchantType',
-    },
-    {
-      width: 120,
-      title: '商家名称',
-      dataIndex: 'merchantName',
-    },
-    {
-      width: 80,
-      title: '服务',
-      dataIndex: 'service',
-    },
-    {
-      width: 100,
-      title: '锁客（人）',
-      dataIndex: 'lockGuests',
-    },
-    {
-      width: 120,
-      title: '现金余额（元）',
-      dataIndex: 'cashBalance',
-    },
-    {
-      width: 120,
-      title: 'D豆余额',
-      dataIndex: 'dbeanBalance',
-    },
-    {
-      width: 120,
-      title: '商家返豆/笔',
-      dataIndex: 'merchantBack',
-    },
-    {
-      width: 120,
-      title: '平台返豆/笔',
-      dataIndex: 'platformBack',
-    },
-    {
-      width: 180,
-      title: '平台补贴上限/天（D豆）',
-      dataIndex: 'subsidies',
-    },
+    { width: 100, title: '商家ID', dataIndex: 'id', fixed: 'left' },
+    { width: 120, title: '城市区域', dataIndex: 'from' },
+    { width: 100, title: '商家类型', dataIndex: 'merchantType' },
+    { width: 120, title: '商家名称', dataIndex: 'merchantName' },
+    { width: 80, title: '服务', dataIndex: 'service' },
+    { width: 100, title: '锁客（人）', dataIndex: 'lockGuests' },
+    { width: 120, title: '现金余额（元）', dataIndex: 'cashBalance' },
+    { width: 120, title: 'D豆余额', dataIndex: 'dbeanBalance' },
+    { width: 120, title: '商家返豆/笔', dataIndex: 'merchantBack' },
+    { width: 120, title: '平台返豆/笔', dataIndex: 'platformBack' },
+    { width: 180, title: '平台补贴上限/天（D豆）', dataIndex: 'subsidies' },
     {
       width: 180,
       title: '签到商家奖励/次（D豆）',
@@ -211,16 +116,8 @@ const Manage_Merchants: FC = () => {
       title: '签到平台奖励/次（D豆）',
       dataIndex: 'platformRewards',
     },
-    {
-      width: 160,
-      title: '起抵门槛/笔（元）',
-      dataIndex: 'deductionThreshold',
-    },
-    {
-      width: 180,
-      title: '最高可抵/笔（D豆）',
-      dataIndex: 'maximumDeductible',
-    },
+    { width: 160, title: '起抵门槛/笔（元）', dataIndex: 'deductionThreshold' },
+    { width: 180, title: '最高可抵/笔（D豆）', dataIndex: 'maximumDeductible' },
     {
       title: '操作',
       key: 'action',
@@ -228,10 +125,9 @@ const Manage_Merchants: FC = () => {
       fixed: 'right',
       width: 170,
       render: () => (
-        <Space size="middle">
-          <a onClick={() => setMerchantDetailsModalVisible(true)}>详情/编辑</a>
-          <a onClick={() => setSettlementModalVisible(true)}>结算D积分</a>
-        </Space>
+        <Button type="primary" onClick={() => setDetailsVisible(true)}>
+          详情/编辑
+        </Button>
       ),
     },
   ];
@@ -240,9 +136,11 @@ const Manage_Merchants: FC = () => {
     <div className="page site-page merchants">
       {/* 顶栏 */}
       <div className="site-top-bar">
+        {/* 标题 */}
         <section>
           <span className="site-top-bar__title">商家管理</span>
         </section>
+        {/* 额外信息 */}
         <Space size="large">
           <span>
             <span className="site-top-bar__label">锁客：</span>
@@ -274,10 +172,6 @@ const Manage_Merchants: FC = () => {
           {/* 城市区域 */}
           <Form.Item label="城市区域：" name="city">
             <CityCascader />
-          </Form.Item>
-          {/* 类型 */}
-          <Form.Item label="类型：" name="type">
-            <Cascader options={options} loadData={onLoadData} changeOnSelect />
           </Form.Item>
           {/* 搜索 */}
           <Form.Item label="搜索：" name="searchKey">
@@ -328,15 +222,14 @@ const Manage_Merchants: FC = () => {
       />
       {/* Modal - 商家详情弹出层 */}
       <Modal
-        zIndex={1}
         width={1000}
         title="商家详情"
-        visible={merchantDetailsModalVisible}
+        visible={detailsVisible}
         bodyStyle={{ padding: `8px 24px` }}
         className="merchant-details-modal"
         okText="保存"
-        onCancel={() => setMerchantDetailsModalVisible(false)}
-        onOk={() => setMerchantDetailsModalVisible(false)}
+        onCancel={() => setDetailsVisible(false)}
+        onOk={() => setDetailsVisible(false)}
       >
         <div>
           <div className="rounded-8">
@@ -388,7 +281,7 @@ const Manage_Merchants: FC = () => {
                   size="small"
                   type="primary"
                   style={{ fontSize: 12 }}
-                  onClick={() => setSettlementModalVisible(true)}
+                  onClick={() => setSettleVisible(true)}
                 >
                   结算D积分
                 </Button>
@@ -475,10 +368,9 @@ const Manage_Merchants: FC = () => {
       </Modal>
       {/* Modal - 结算 */}
       <Modal
-        zIndex={2}
         title="结算D积分"
         className="merchant-details-modal"
-        visible={settlementModalVisible}
+        visible={settleVisible}
         onOk={() => {
           Modal.confirm({
             title: '确认结算D豆',
@@ -500,11 +392,11 @@ const Manage_Merchants: FC = () => {
               </>
             ),
             onOk: () => {
-              setSettlementModalVisible(false);
+              setSettleVisible(false);
             },
           });
         }}
-        onCancel={() => setSettlementModalVisible(false)}
+        onCancel={() => setSettleVisible(false)}
         width={1000}
         okText="提交结算"
       >
