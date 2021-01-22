@@ -10,6 +10,7 @@ import {
   Form,
   message,
 } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
 import { ColumnProps } from 'antd/es/table';
 import CityCascader from '@/components/CityCascader';
 
@@ -184,7 +185,7 @@ const Manage_Merchants: FC = () => {
           </Form.Item>
           {/* 提交 */}
           <Form.Item>
-            <Button htmlType="submit" type="primary">
+            <Button htmlType="submit" icon={<SearchOutlined />} type="primary">
               搜索
             </Button>
           </Form.Item>
@@ -197,7 +198,7 @@ const Manage_Merchants: FC = () => {
         rowKey="id"
         bordered
         size="small"
-        scroll={{ y: 'calc(100vh - 280px)' }}
+        scroll={{ y: 'calc(100vh - 275px)' }}
         pagination={{
           current: page.page /** 当前页数 */,
           hideOnSinglePage: false /** 只有一页时是否隐藏分页器 */,

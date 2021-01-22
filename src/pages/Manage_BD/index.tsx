@@ -14,6 +14,7 @@ import {
   message,
   Modal,
 } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
 import classNames from 'lg-classnames';
 import CityCascader from '@/components/CityCascader';
 
@@ -368,7 +369,12 @@ const Manage_BD: FC = () => {
             </Form.Item>
             {/* 提交 */}
             <Form.Item>
-              <Button htmlType="submit" type="primary" size="middle">
+              <Button
+                htmlType="submit"
+                type="primary"
+                size="middle"
+                icon={<SearchOutlined />}
+              >
                 搜索
               </Button>
             </Form.Item>
@@ -392,7 +398,7 @@ const Manage_BD: FC = () => {
             dataSource={aDataSource}
             bordered
             size="small"
-            scroll={{ y: 'calc(100vh - 320px)' }}
+            scroll={{ y: 'calc(100vh - 300px)' }}
             rowKey="key"
             rowSelection={{
               type: 'checkbox',
@@ -447,7 +453,7 @@ const Manage_BD: FC = () => {
             dataSource={bDataSource}
             bordered
             size="small"
-            scroll={{ y: 'calc(100vh - 280px)' }}
+            scroll={{ y: 'calc(100vh - 275px)' }}
             pagination={{
               current: bPage.page /** 当前页数 */,
               hideOnSinglePage: false /** 只有一页时是否隐藏分页器 */,
