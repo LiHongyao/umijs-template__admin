@@ -136,6 +136,7 @@ const Manage_BD: FC = () => {
   const [activeKey, setActiveKey] = useState('1');
   const [filterParams, setFilterParams] = useState<FilterParamsType>({});
 
+  const [rowSelection, setRowSelection] = useState<any>();
   const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
   const [rejectReason, setRejectReason] = useState('');
   const [rejectModalVisible, setRejectModalVisible] = useState(false);
@@ -309,24 +310,38 @@ const Manage_BD: FC = () => {
             ))}
           </div>
           {/* 额外信息 */}
-          <Space size="large">
-            {activeKey === '2' && (
-              <>
-                <span>
-                  <span className="site-top-bar__label">商家数量：</span>
-                  <span className="site-top-bar__value">23232家</span>
-                </span>
-                <span>
-                  <span className="site-top-bar__label">锁客：</span>
-                  <span className="site-top-bar__value">23233232人</span>
-                </span>
-                <span>
-                  <span className="site-top-bar__label">余额：</span>
-                  <span className="site-top-bar__value">232322元</span>
-                </span>
-              </>
-            )}
-          </Space>
+          <div hidden={activeKey !== '2'}>
+            <Space size="large">
+              <span>
+                <span className="site-top-bar__label">商家数量：</span>
+                <span className="site-top-bar__value">23232家</span>
+              </span>
+              <span>
+                <span className="site-top-bar__label">锁客：</span>
+                <span className="site-top-bar__value">23233232人</span>
+              </span>
+              <span>
+                <span className="site-top-bar__label">余额：</span>
+                <span className="site-top-bar__value">232322元</span>
+              </span>
+            </Space>
+          </div>
+          <Button
+            type="primary"
+            size="small"
+            shape="round"
+            hidden={activeKey !== '1'}
+            onClick={() =>
+              setRowSelection({
+                type: 'checkbox',
+                onChange: (selectedRowKeys: any) =>
+                  setSelectedRowKeys(selectedRowKeys),
+                selectedRowKeys,
+              })
+            }
+          >
+            批量审核
+          </Button>
         </div>
         {/* 过滤栏 */}
         <div className="site-filter-bar">
@@ -350,14 +365,12 @@ const Manage_BD: FC = () => {
               <CityCascader />
             </Form.Item>
             {/* BDM */}
-            {activeKey === '2' && (
-              <Form.Item label="BD：" name="bdmUid">
-                <Select placeholder="请选择" allowClear>
-                  <Option value="李鸿耀">李鸿耀</Option>
-                  <Option value="王理">王理</Option>
-                </Select>
-              </Form.Item>
-            )}
+            <Form.Item label="BD：" name="bdmUid" hidden={activeKey !== '2'}>
+              <Select placeholder="请选择" allowClear>
+                <Option value="李鸿耀">李鸿耀</Option>
+                <Option value="王理">王理</Option>
+              </Select>
+            </Form.Item>
             {/* 搜索 */}
             <Form.Item label="搜索：" name="searchKey">
               <Input
@@ -398,14 +411,9 @@ const Manage_BD: FC = () => {
             dataSource={aDataSource}
             bordered
             size="small"
-            scroll={{ y: 'calc(100vh - 300px)' }}
+            scroll={{ y: `calc(100vh - ${rowSelection ? 300 : 275}px)` }}
             rowKey="key"
-            rowSelection={{
-              type: 'checkbox',
-              onChange: (selectedRowKeys) =>
-                setSelectedRowKeys(selectedRowKeys),
-              selectedRowKeys,
-            }}
+            rowSelection={rowSelection}
             pagination={{
               current: aPage.page /** 当前页数 */,
               hideOnSinglePage: false /** 只有一页时是否隐藏分页器 */,
@@ -427,24 +435,44 @@ const Manage_BD: FC = () => {
                   page: current,
                 })),
             }}
-            footer={() => (
-              <Space>
-                <span style={{ marginLeft: 8 }}>
-                  当前选中 {selectedRowKeys.length} 家店铺
-                </span>
-                <Button size="small" type="primary" onClick={() => onAudit(1)}>
-                  审核通过
-                </Button>
-                <Button
-                  size="small"
-                  danger
-                  type="primary"
-                  onClick={() => onAudit(0)}
-                >
-                  审核驳回
-                </Button>
-              </Space>
-            )}
+            footer={() =>
+              rowSelection ? (
+                <Space>
+                  <span style={{ marginLeft: 8 }}>
+                    当前选中 {selectedRowKeys.length} 家店铺
+                  </span>
+                  <Button
+                    size="small"
+                    type="primary"
+                    onClick={() => setRowSelection([])}
+                  >
+                    重选
+                  </Button>
+                  <Button
+                    size="small"
+                    type="primary"
+                    onClick={() => setRowSelection(undefined)}
+                  >
+                    取消审核
+                  </Button>
+                  <Button
+                    size="small"
+                    type="primary"
+                    onClick={() => onAudit(1)}
+                  >
+                    审核通过
+                  </Button>
+                  <Button
+                    size="small"
+                    danger
+                    type="primary"
+                    onClick={() => onAudit(0)}
+                  >
+                    审核驳回
+                  </Button>
+                </Space>
+              ) : null
+            }
           />
         </TabPane>
         <TabPane tab="已认证BD" key="2">
