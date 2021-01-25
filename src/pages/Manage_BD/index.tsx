@@ -136,7 +136,7 @@ const Manage_BD: FC = () => {
   const [activeKey, setActiveKey] = useState('1');
   const [filterParams, setFilterParams] = useState<FilterParamsType>({});
 
-  const [rowSelection, setRowSelection] = useState<any>();
+  const [enableRowSel, setEnableRowSel] = useState<any>();
   const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
   const [rejectReason, setRejectReason] = useState('');
   const [rejectModalVisible, setRejectModalVisible] = useState(false);
@@ -186,6 +186,7 @@ const Manage_BD: FC = () => {
     setSelectedRowKeys([]);
     setRejectReason('');
     setRejectModalVisible(false);
+    setEnableRowSel(false);
   };
   const onAudit = (status: number) => {
     if (selectedRowKeys.length === 0) {
@@ -327,18 +328,12 @@ const Manage_BD: FC = () => {
             </Space>
           </div>
           <Button
+            disabled={aDataSource.length <= 0}
             type="primary"
             size="small"
             shape="round"
             hidden={activeKey !== '1'}
-            onClick={() =>
-              setRowSelection({
-                type: 'checkbox',
-                onChange: (selectedRowKeys: any) =>
-                  setSelectedRowKeys(selectedRowKeys),
-                selectedRowKeys,
-              })
-            }
+            onClick={() => setEnableRowSel(true)}
           >
             批量审核
           </Button>
@@ -411,9 +406,18 @@ const Manage_BD: FC = () => {
             dataSource={aDataSource}
             bordered
             size="small"
-            scroll={{ y: `calc(100vh - ${rowSelection ? 300 : 275}px)` }}
+            scroll={{ y: `calc(100vh - ${enableRowSel ? 300 : 275}px)` }}
             rowKey="key"
-            rowSelection={rowSelection}
+            rowSelection={
+              enableRowSel
+                ? {
+                    type: 'checkbox',
+                    onChange: (selectedRowKeys: any) =>
+                      setSelectedRowKeys(selectedRowKeys),
+                    selectedRowKeys,
+                  }
+                : undefined
+            }
             pagination={{
               current: aPage.page /** 当前页数 */,
               hideOnSinglePage: false /** 只有一页时是否隐藏分页器 */,
@@ -436,7 +440,7 @@ const Manage_BD: FC = () => {
                 })),
             }}
             footer={() =>
-              rowSelection ? (
+              enableRowSel ? (
                 <Space>
                   <span style={{ marginLeft: 8 }}>
                     当前选中 {selectedRowKeys.length} 家店铺
@@ -444,14 +448,17 @@ const Manage_BD: FC = () => {
                   <Button
                     size="small"
                     type="primary"
-                    onClick={() => setRowSelection([])}
+                    onClick={() => setSelectedRowKeys([])}
                   >
                     重选
                   </Button>
                   <Button
                     size="small"
                     type="primary"
-                    onClick={() => setRowSelection(undefined)}
+                    onClick={() => {
+                      setEnableRowSel(false);
+                      setSelectedRowKeys([]);
+                    }}
                   >
                     取消审核
                   </Button>
